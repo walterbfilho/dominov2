@@ -4,6 +4,7 @@ from datetime import datetime
 from io import BytesIO
 
 from apscheduler.schedulers.background import BackgroundScheduler
+from dotenv import load_dotenv
 from flask import Flask, flash, redirect, render_template, request, url_for
 from flask_login import (LoginManager, UserMixin, current_user, login_required,
                          login_user, logout_user)
@@ -19,6 +20,8 @@ from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
+load_dotenv()
+print(f"MYSQL AQUI O --> mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}")
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
 
 UPLOAD_FOLDER = 'static/uploads'
