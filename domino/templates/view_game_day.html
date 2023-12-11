@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    /* Define uma cor de fundo suave para a página */
+    body {
+        background-color: #f4f4f4;
+        font-family: 'Arial', sans-serif;
+    }
+
+    /* Define o estilo do container principal */
+    .container {
+        width: 80%;
+        margin: auto;
+        background: #fff;
+        padding: 30px;
+        box-shadow: 0px 0px 10px 0px #000;
+    }
+
+    /* Define o estilo da tabela e seus elementos */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow-x: auto; /* Adiciona scroll horizontal à tabela */
+    }
+
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Define o estilo dos botões e links */
+    .buttons-bottom a, .buttons-bottom button, td a, td button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 12px;
+    }
+
+    .buttons-bottom a:hover, .buttons-bottom button:hover, td a:hover, td button:hover {
+        background-color: #45a049;
+    }
+
+    /* Define o estilo do botão de voltar */
+    .back-button {
+        background-color: #f44336;
+        color: white;
+    }
+
+    .back-button:hover {
+        background-color: #da190b;
+    }
+
+    .scrollable-table{
+        overflow-x: auto;
+    }
+
+    /* Define estilos para telas menores */
+    @media (max-width: 768px) {
+        .container {
+            width: 95%;
+        }
+    }
+</style>
+
+
+<div class="container mt-5">
+    <div class="game-day-details-container">
+        <h2>{{ gameDay.date.strftime('%d-%m-%Y') }}</h2>
+
+        <h3>Jogadores</h3>
+        <div class="scrollable-table">
+            <table id="gameDayTable" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Nome do Jogador</th>
+                        <th>Buchos Dados</th>
+                        <th>Buchos Recebidos</th>
+                        {% if current_user.is_authenticated %}
+                            <th>Ação</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                {% for detail in gameDayPlayerDetails %}
+                    <tr>
+                        <td>{{ detail.player.name }}</td>
+                        <td>{{ detail.buchos_given }}</td>
+                        <td>{{ detail.buchos_received }}</td>
+                        {% if current_user.is_authenticated %}
+                            <td style="display: flex; justify-content: space-between;">
+                                <a href="{{ url_for('update_buchos', game_day_id=gameDay.id, player_id=detail.player.id) }}">Editar</a>
+                                <form method="post" action="{{ url_for('delete_game_day_player', game_day_id=gameDay.id, game_day_player_id=detail.id) }}">
+                                    <button type="submit" onclick="return confirm('Tem certeza que deseja excluir?');">Remover</button>
+                                </form>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="buttons-bottom">
+            {% if current_user.is_authenticated %}
+                <a class="top-buttom" href="{{ url_for('add_player_to_game_day', game_day_id = gameDay.id) }}">Adicionar</a>
+
+                <form method="post" class="delete-action-game-day" action="{{ url_for('delete_game_day', game_day_id=gameDay.id) }}">
+                    <button type="submit" onclick="return confirm('Tem certeza que deseja excluir?');">Excluir dia de jogo</button>
+                </form>
+            {% endif %}
+
+            <a class="back-button" href="{{ url_for('view_game_days') }}">Voltar</a>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        var isUserAuthenticated = {{ current_user.is_authenticated|tojson }};
+        var columns_not_ordenable = isUserAuthenticated ? [3] : [];
+        $('#gameDayTable').DataTable({
+            "paging": false, // Desativa a paginação
+            "ordering": true, // Ativa a ordenação
+            "order": [[1, 'asc']], // Ordena inicialmente pela segunda coluna de forma ascendente.
+            "columnDefs": [
+                { "orderable": false, "targets": columns_not_ordenable }
+            ],
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Portuguese-Brasil.json"
+            }
+        });
+    });
+    </script>
+{% endblock %}

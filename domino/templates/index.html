@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    /* Define uma cor de fundo suave para a página */
+    body {
+        background-color: #f4f4f4;
+        font-family: 'Arial', sans-serif;
+    }
+
+    /* Define o estilo do container principal */
+    .container {
+        width: 80%;
+        margin: auto;
+        background: #fff;
+        padding: 30px;
+        box-shadow: 0px 0px 10px 0px #000;
+    }
+
+    /* Define o estilo da imagem */
+    img {
+        display: block;
+        margin: auto;
+        width: 25%; /* Torna a imagem responsiva */
+    }
+
+    /* Define o estilo da tabela e seus elementos */
+    .players-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .players-table th, .players-table td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+    }
+
+    .players-table th {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .players-table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Define o estilo dos botões */
+    button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 12px;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    /* Define o estilo dos links */
+    .styled-link {
+        text-decoration: none;
+        color: #4CAF50;
+        font-size: 16px;
+        margin: 10px;
+    }
+
+    .styled-link:hover {
+        text-decoration: underline;
+    }
+
+    /* Define o estilo do botão de logout */
+    .logout-button {
+        background-color: #f44336;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 12px;
+    }
+
+    .logout-button:hover {
+        background-color: #da190b;
+    }
+
+    .scrollable-table{
+        overflow-x: auto;
+    }
+
+    .players-table td:first-child form button {
+        background-color: transparent; /* Remove a cor de fundo */
+        color: inherit; /* Usa a cor de texto padrão */
+        border: none; /* Remove a borda */
+        padding: 0; /* Remove o padding */
+        font-size: inherit; /* Usa o tamanho de fonte padrão */
+        cursor: pointer; /* Mantém o cursor como ponteiro */
+        text-decoration: underline; /* Adiciona sublinhado */
+        border-radius: 0; /* Remove o arredondamento */
+        display: inline; /* Mantém o botão inline */
+    }
+
+    .players-table td:first-child {
+        text-align: center;
+        vertical-align: middle;
+    }
+    
+    .players-table td:first-child form button:hover {
+        background-color: transparent; /* Remove a cor de fundo ao passar o mouse */
+        color: inherit; /* Mantém a cor de texto ao passar o mouse */
+    }
+
+    /* Define estilos para telas menores */
+    @media (max-width: 768px) {
+        .container {
+            width: 95%;
+        }
+
+        .adjust-media{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .styled-link, .logout-button {
+            display: block;
+            margin: 10px 0;
+        }
+
+        img {
+            display: block;
+            margin: auto;
+            width: 40%;
+        }
+    }
+</style>
+
+
+<div class="container">
+    <img src="{{ url_for('static', filename='Reinado_dos_Buchos.png') }}" alt="Imagem de peças de dominó" width="300">
+
+    <h2>Jogadores Registrados:</h2>
+    <div class="scrollable-table">
+        <table class="players-table">
+            <thead>
+                <tr>
+                    <th class="name-column">
+                        Nome 
+                    </th>
+                    <th>
+                        Pontos
+                    </th>
+                    <th>
+                        Frequência
+                    </th>
+                    <th class="buchos-dados">
+                        Buchos Dados 
+                    </th>
+                    <th class="buchos-recebidos">
+                        Buchos Recebidos
+                    </th>
+                    <th>
+                        Rei dos Buchos
+                    </th>
+                    <th>
+                        Buchudo do Mês
+                    </th>
+                    {% if current_user.is_authenticated %}
+                        <th>Ações</th>
+                    {% endif %}
+                </tr>
+            </thead>        
+            <tbody>
+                {% if players %}
+                    {% for player in players %}
+                    <tr>
+                        <td>   
+                            {% if player.image_filename %}
+                                <img src="{{ url_for('static', filename='uploads/' + player.image_filename) }}" alt="Imagem de {{ player.name }}" width="150">
+                            {% endif %}                 
+                            <form method="get" action="{{ url_for('view_player', player_id=player.id) }}" style="display: inline;">
+                                <button type="submit">{{ player.name }}</button>
+                            </form>
+                        </td>
+                        <td>{{ player.points }}</td>
+                        <td>{{ player.frequencia_dias }}</td>
+                        <td>{{ player.buchos_dados }}</td>
+                        <td>{{ player.buchos_recebidos }}</td>
+                        {% if player.frequencia_dias > 0 %}
+                            <td>{{ (player.buchos_dados / player.frequencia_dias)|round(2) }}</td> <!-- Rei dos Buchos -->
+                            <td>{{ (player.buchos_recebidos / player.frequencia_dias)|round(2) }}</td> <!-- Buchudo do Mês -->
+                        {% else %}
+                            <td>0</td> <!-- Rei dos Buchos -->
+                            <td>0</td> <!-- Buchudo do Mês -->
+                        {% endif %}
+
+                        {% if current_user.is_authenticated %}
+                            <td>
+                                <div class="action-buttons">
+                                    <form method="post" action="{{ url_for('edit_player', player_id=player.id) }}">
+                                        <button type="submit">Editar</button>
+                                    </form>
+                                    <form method="post" action="{{ url_for('delete_player', player_id=player.id) }}">
+                                        <button type="submit" onclick="return confirm('Tem certeza que deseja excluir?');">Excluir</button>
+                                    </form>
+                                </div>
+                            </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    {% if current_user.is_authenticated %}
+        <div class="adjust-media" style="padding-top: 2%;display: flex; justify-content: space-between; flex-wrap: wrap;"> 
+            <a class="styled-link" href="{{ url_for('registrar_jogador') }}">Registrar</a>
+            <a class="styled-link" href="{{ url_for('chart') }}">Estatísticas do mês</a>
+            <a class="styled-link" href="{{ url_for('view_game_days') }}">Dias de Jogo</a>
+            <a class="styled-link" href="{{ url_for('tabela_buchos') }}">Visualização Detalhada dos Buchos</a>
+        </div>
+    {% else %}
+        <div class="adjust-media" style="padding-top: 2%;display: flex; justify-content: space-between; flex-wrap: wrap;"> 
+            <a class="styled-link" href="{{ url_for('chart') }}">Estatísticas do mês</a>
+            <a class="styled-link" href="{{ url_for('view_game_days') }}">Dias de Jogo</a>
+            <a class="styled-link" href="{{ url_for('login') }}">Login</a>
+            <a class="styled-link" href="{{ url_for('tabela_buchos') }}">Visualização Detalhada dos Buchos</a>
+        </div>
+    {% endif %}
+    <br>
+    {% if current_user.is_authenticated %}
+        <div class="adjust-media" style="padding-top: 2%;display: flex; justify-content: end; flex-wrap: wrap;"> 
+            <a class="logout-button" href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    {% endif %}
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var isUserAuthenticated = {{ current_user.is_authenticated|tojson }};
+        
+        var columnDefs;
+        if(isUserAuthenticated) {
+            columnDefs = [
+                { "orderable": true, "targets": [0, 1, 2, 3, 4, 5, 6] },
+                { "orderable": false, "targets": [7] }
+            ];
+        } else {
+            columnDefs = [
+                { "orderable": true, "targets": [1, 2, 3, 4, 5, 6] },
+                { "orderable": false, "targets": [] }
+            ];
+        }
+
+        $('.players-table').DataTable({
+            "paging": false,
+            "ordering": true,
+            "order": [[1, 'asc']],
+            "columnDefs": columnDefs,
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Portuguese-Brasil.json"
+            }
+        });
+    });
+</script>
+{% endblock %}

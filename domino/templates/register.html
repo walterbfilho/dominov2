@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        width: 90%;
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    input, select {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+    input {
+        width: 375px;
+    }
+    button {
+        padding: 10px;
+        margin-top: 30px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        font-weight: bold;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    a {
+        text-decoration: none;
+        color: #4caf50;
+    }
+
+    a:hover {
+        opacity: 0.65;
+    }
+
+    @media screen and (max-width: 768px) {
+
+        input {
+            width: 310px;
+        }
+    }
+</style>
+
+<div class="container">
+    <h2>Registro</h2>
+    <form action="{{ url_for('register') }}" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}
+        </div>
+        <div>
+            {{ form.email.label }}<br>
+            {{ form.email(size=32) }}
+        </div>
+        <div>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}
+        </div>
+        <div>
+            {{ form.password2.label }}<br>
+            {{ form.password2(size=32) }}
+        </div>
+        <div>
+            <button type="submit">Registrar</button>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding-top: 10px; width: 100%;">
+            <a href="{{ url_for('login') }}">Já tenho uma conta</a>
+            <a href="{{ url_for('home') }}">Home</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

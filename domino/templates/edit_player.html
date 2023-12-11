@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>  
+
+<style>
+    /* Estilos personalizados */
+    .registration-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .registration-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .registration-container div {
+        margin-bottom: 10px;
+    }
+
+    .registration-container label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .registration-container input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .registration-container input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .registration-container input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+
+    .back-button {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .back-button:hover {
+        text-decoration: underline;
+    }
+
+    #cropImageModal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    #imagePreview {
+        max-width: 100%;
+    }
+
+    .custom-file-input {
+        display: none;
+    }
+
+    .custom-file-label {
+        display: inline-block;
+        clear: both;
+        padding: 10px 15px;
+        background-color: #f8f8f8;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-align: center;
+    }
+    
+    .custom-file-label:hover {
+        background-color: #e6e6e6;
+    }
+    
+    .custom-file-label i {
+        margin-right: 5px;
+    }
+
+</style>
+
+<div class="registration-container">
+    <h2>Editar Jogador</h2>
+    <form method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            {{ form.name.label }}
+            {{ form.name() }}
+        </div>
+        <div class="mb-3">
+            {{ form.points.label }}
+            {{ form.points() }}
+        </div>
+        <div class="mb-3">
+            {{ form.frequencia_dias.label }}
+            {{ form.frequencia_dias() }}
+        </div>
+        <div class="mb-3">
+            {{ form.buchos_recebidos.label }}
+            {{ form.buchos_recebidos() }}
+        </div>
+        <div class="mb-3">
+            <label for="image" id ="imageLabel" class="custom-file-label"><i class="fas fa-upload"></i> Escolha uma imagem</label>
+            {{ form.image(id="image", class="custom-file-input") }}
+        </div>
+        <div id="cropImageModal" style="display: none;">
+            <input type="hidden" name="cropped_image" id="croppedImageInput">
+            <img id="imagePreview" src="#" alt="Image preview">
+            <button type="button" id="cropAndSave">Selecionar</button>
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+    <a class="back-button" href="{{ url_for('home') }}">Voltar</a>
+</div>
+<script>
+    let imageInput = document.querySelector('[name="image"]');
+    let imagePreview = document.getElementById('imagePreview');
+    let modal = document.getElementById('cropImageModal');
+    let cropper;
+
+    imageInput.addEventListener('change', function() {
+        let file = this.files[0];
+        let reader = new FileReader();
+
+        reader.onload = function(event) {
+            imagePreview.src = event.target.result;
+            modal.style.display = 'block';
+
+            if(cropper){
+                cropper.destroy();
+            }
+
+            cropper = new Cropper(imagePreview, {
+                aspectRatio: 1,
+                viewMode: 1,
+            });
+        }
+
+        reader.readAsDataURL(file);
+
+        this.value = null;
+    });
+
+    document.getElementById('cropAndSave').addEventListener('click', function() {
+        let croppedImageDataURL = cropper.getCroppedCanvas().toDataURL('image/png');
+        document.getElementById('croppedImageInput').value = croppedImageDataURL;
+        modal.style.display = 'none';
+        document.getElementById('imageLabel').innerHTML = '<i class="fas fa-upload"></i> Trocar imagem';
+    });
+</script>
+{% endblock %}

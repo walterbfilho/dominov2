@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f7f7f7;
+        margin: 0;
+        padding: 0;
+    }
+
+    .player-details {
+        max-width: 600px;
+        margin: 2em auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 4px;
+        text-align: center;
+    }
+
+    .player-details h2 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .player-details img {
+        border-radius: 50%;
+        margin-bottom: 20px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .player-details p {
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: #555;
+    }
+
+    .player-actions a, .player-actions button {
+        display: inline-block;
+        margin: 5px;
+        padding: 8px 15px;
+        text-decoration: none;
+        border-radius: 3px;
+        border: none;
+        background-color: #000;
+        color: #fff;
+        transition: background-color 0.3s;
+    }
+
+    .player-actions a:hover, .player-actions button:hover {
+        background-color: #ff0000;
+    }
+
+    .player-actions form {
+        display: inline;
+    }
+</style>
+
+<div class="player-details">
+    <h2>{{ player.name }}</h2>
+    {% if player.image_filename %}
+        <img src="{{ url_for('static', filename='uploads/' + player.image_filename) }}" alt="Imagem de {{ player.name }}" width="150">
+    {% endif %}
+    <p><strong>Pontuação:</strong> {{ player.points }}</p>
+    <p><strong>Buchos dados:</strong> {{ player.buchos_dados }}</p>
+    <p><strong>Buchos recebidos:</strong> {{ player.buchos_recebidos }}</p>
+    <p><strong>Frequência:</strong> {{ player.frequencia_dias }} dias</p>
+
+    <div class="player-actions">
+    {% if current_user.is_authenticated %}
+            <a href="{{ url_for('edit_player', player_id=player.id) }}">Editar</a>
+            <form method="post" action="{{ url_for('delete_player', player_id=player.id) }}" style="display: inline;">
+                <button type="submit" onclick="return confirm('Tem certeza que deseja excluir?');">Excluir</button>
+            </form>
+    {% endif %}
+        <a href="{{ url_for('home') }}">Voltar</a>
+    </div>
+{% endblock %}

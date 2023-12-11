@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        overflow-x: hidden;
+    }
+
+    .player{
+        display: none;
+    }
+
+    .back-button {
+        display: block;
+        margin-top: 40px; /* Aumentar a margem superior */
+        text-align: center;
+        text-decoration: none;
+        color: white;
+        background-color: #4CAF50;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .back-button:hover {
+        background-color: #45a049;
+    }
+
+    header {
+        width: 100%;
+        padding: 30px 0; /* Aumentar o padding */
+        background-color: #4CAF50;
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+        text-align: center; /* Centralizar o título */
+    }
+
+    section {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    header > select {
+        width: 90%;
+        max-width: 300px;
+        margin: 10px 0; /* Aumentar a margem */
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: white;
+    }
+
+    #grafico {
+        overflow: hidden;
+        min-width: 280px;
+        max-width: 900px;
+        width: 90%;
+        height: 400px;
+        margin-top: 20px;
+        box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .top-players {
+        display: flex;
+        width: fit-content;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .player {
+        margin: 10px;
+        text-align: center;
+        flex: 1;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
+        transition: 0.3s; /* Adicionar transição */
+    }
+
+    .player img {
+        width: 300px;
+        height: 300px;
+        margin-top: 10px;
+        transition: 0.3s; /* Adicionar transição */
+    }
+
+    .classification {
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #4CAF50;
+    }
+
+    /* Media Queries for Responsiveness */
+    @media (max-width: 768px) {
+        .top-players {
+            flex-direction: column;
+        }
+
+        .player {
+            width: 80%;
+            margin: 10px auto;
+        }
+
+        header > select {
+            width: 80%;
+        }
+    }
+
+</style>
+
+
+<header>
+    <h2 style="text-align: center;">Estatísticas Mensais</h2>
+    {% if players %}
+    <div class="top-players">
+        <div class="player" id="playerPontos">
+            <div class="classification">Maior Pontuação</div>
+            {% if max_points_image %}
+                <img src="{{ url_for('static', filename='uploads/' + max_points_image) }}" alt="Jogador com mais pontos">
+            {% endif %}
+            <p>{{ max_points_player }}</p>
+        </div>
+        <div class="player" id="playerFrequencia" style="display = 'none';">
+            <div class="classification">Maior Frequência de Dias</div>
+            {% if max_frequencia_dias_image %}
+                <img src="{{ url_for('static', filename='uploads/' + max_frequencia_dias_image) }}" alt="Jogador com mais frequência de dias">
+            {% endif %}
+            <p>{{ max_frequencia_dias_player }}</p>
+        </div>
+        <div class="player" id="playerBuchosDados" style="display = 'none';">
+            <div class="classification">Mais Buchos Dados</div>
+            {% if max_buchos_dados_image %}
+                <img src="{{ url_for('static', filename='uploads/' + max_buchos_dados_image) }}" alt="Jogador com mais buchos dados">
+            {% endif %}
+            <p>{{ max_buchos_dados_player }}</p>
+        </div>
+        <div class="player" id="playerBuchosRecebidos" style="display = 'none';">
+            <div class="classification">Mais Buchos Recebidos</div>
+            {% if max_buchos_recebidos_image %}
+                <img src="{{ url_for('static', filename='uploads/' + max_buchos_recebidos_image) }}" alt="Jogador com mais buchos recebidos">
+            {% endif %}
+            <p>{{ max_buchos_recebidos_player }}</p>
+        </div>
+    </div>
+    <select id="graphSelector" onchange="showGraph()">
+        <option value="graficoPontos" selected>Visualizar Gráfico de Pontos</option>
+        <option value="GraficoFrequencia">Visualizar Gráfico de Frequência</option>
+        <option value="graficoBuchosDados">Visualizar Gráfico de Buchos Dados</option>
+        <option value="graficoBuchosRecebidos">Visualizar Gráfico de Buchos Recebidos</option>
+    </select>
+    <select id="graphTypeSelector" onchange="showGraph()">
+        <option value="bar" selected>Barra</option>
+        <option value="line">Linha</option>
+    </select>
+    {% endif %}
+</header>
+
+<section class="grafico-section">
+    <div id="grafico"></div>
+    <a class="back-button" href="{{ url_for('home') }}">Voltar</a>
+</section>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+
+<script>
+    function sortDataAndLabels(data, labels) {
+        let combined = [];
+        for (let i = 0; i < data.length; i++) {
+            combined.push({'data': data[i], 'label': labels[i]});
+        }
+        
+        combined.sort(function(a, b) {
+            return a.data - b.data;
+        });
+        
+        let sortedData = [];
+        let sortedLabels = [];
+        for (let i = 0; i < combined.length; i++) {
+            sortedData.push(combined[i].data);
+            sortedLabels.push(combined[i].label);
+        }
+        
+        return {data: sortedData, labels: sortedLabels};
+    }
+
+    function showGraph() {
+        var graphId = document.getElementById('graphSelector').value;
+        var type = document.getElementById('graphTypeSelector').value === 'bar' ? 'column' : 'line';
+
+        document.querySelectorAll('.player').forEach(player => {
+            player.style.display = 'none';
+        });
+
+        var graphLabel, graphData;
+
+        switch (graphId) {
+            case 'graficoPontos':
+                document.getElementById('playerPontos').style.display = 'block';
+                graphLabel = 'Pontos';
+                graphData = {{ points|tojson }};
+                break;
+            case 'GraficoFrequencia':
+                document.getElementById('playerFrequencia').style.display = 'block';
+                graphLabel = 'Dias';
+                graphData = {{ frequencia_dias|tojson }};
+                break;
+            case 'graficoBuchosDados':
+                document.getElementById('playerBuchosDados').style.display = 'block';
+                graphLabel = 'Buchos Dados';
+                graphData = {{ buchos_dados|tojson }};
+                break;
+            case 'graficoBuchosRecebidos':
+                document.getElementById('playerBuchosRecebidos').style.display = 'block';
+                graphLabel = 'Buchos Recebidos';
+                graphData = {{ buchos_recebidos|tojson }};
+                break;
+        }
+
+        sortedResult = sortDataAndLabels(graphData, {{ names|tojson }});
+
+        Highcharts.chart('grafico', {
+            chart: {
+                type: type
+            },
+            title: {
+                text: graphLabel
+            },
+            xAxis: {
+                categories: sortedResult.labels,
+                labels: {
+                    rotation: 45
+                }
+            },
+            yAxis: {
+                title: {
+                    text: graphLabel
+                }
+            },
+            series: [{
+                name: graphLabel,
+                data: sortedResult.data
+            }]
+        });
+    }
+
+    window.onload = function() {
+        showGraph();
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* Estilos personalizados */
+    .player-update-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .player-update-container h2 {
+        margin-bottom: 20px;
+    }
+
+    .player-update-container div {
+        margin-bottom: 10px;
+    }
+
+    .player-update-container label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .player-update-container input, .player-update-container select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .player-update-container input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .player-update-container input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+
+    .back-button {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .back-button:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="player-update-container">
+    <h2>{{ detail.player.name }}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.buchos_given.label }}
+            {{ form.buchos_given() }}
+        </div>
+        <div>
+            {{ form.buchos_received.label }}
+            {{ form.buchos_received() }}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+</div>
+
+<a class="back-button" href="{{ url_for('view_game_days') }}">Voltar</a>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* Estilos personalizados */
+    .game-days-container {
+        max-width: 800px;
+        height: fit-content;
+        margin: 0 auto;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .game-days-container h2, .game-days-container h3 {
+        margin-bottom: 20px;
+    }
+
+    .game-days-container form div {
+        margin-bottom: 10px;
+    }
+
+    .game-days-container label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .game-days-container input, .game-days-container select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .game-days-container input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .game-days-container input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+
+    .game-day {
+        margin-top: 10px;
+    }
+
+    .back-button {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .back-button:hover {
+        text-decoration: underline;
+    }
+
+    .divider {
+        margin: 30px 0;
+    }
+</style>
+
+<div class="game-days-container">
+
+    <!-- Seção para registrar um novo dia de jogo -->
+    {% if current_user.is_authenticated %}
+        <h3>Registrar Novo Dia de Jogo</h3>
+        <form method="post">
+            {{ form.hidden_tag() }}
+
+            <div>
+                {{ form.date.label }} 
+                {{ form.date() }}
+            </div>
+
+            <div>
+                {{ form.player_ids.label }}:<br>
+                {{ form.player_ids() }}
+            </div>
+
+            <div>
+                {{ form.submit() }}
+            </div>
+        </form>
+
+            <!-- Divisão visual entre registro e visualização -->
+        <div class="divider">
+            <hr>
+        </div>
+    {% endif %}
+
+    <!-- Seção para listar os dias de jogo existentes -->
+    <h3>Dias de Jogo Registrados</h3>
+    {% for game_day in game_days %}
+        <div class="game-day">
+            <a href="{{ url_for('view_game_day', game_day_id=game_day.id) }}">
+                {{ game_day.date.strftime('%d-%m-%Y') }}
+            </a>
+        </div>
+    {% endfor %}
+    <a class="back-button" href="{{ url_for('home') }}">Voltar</a>
+</div>
+{% endblock %}

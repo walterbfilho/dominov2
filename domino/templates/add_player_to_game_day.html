@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Jogador ao Dia de Jogo</title>
+    <link rel="stylesheet" href="seu_estilo.css"> <!-- Lembre-se de adicionar seu arquivo de estilo CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .errors {
+            color: red;
+            margin-bottom: 10px;
+        }
+        label {
+            font-weight: bold;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+        input[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #555;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Adicionar Jogador ao Dia de Jogo</h1>
+    
+    <div class="container">
+        <!-- Exiba mensagens de erro aqui, se houver -->
+        {% if form.errors %}
+        <ul class="errors">
+            {% for field, errors in form.errors.items() %}
+            {% for error in errors %}
+            <li>{{ error }} {{field}}</li>
+            {% endfor %}
+            {% endfor %}
+        </ul>
+        {% endif %}
+        
+        <!-- Crie o formulário para adicionar jogadores -->
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            
+            <label for="player_ids">Selecione os Jogadores:</label>
+            <select name="player_ids" id="player_ids" multiple>
+                {% for player_id, player_name in form.player_ids.choices %}
+                <option value="{{ player_id }}">{{ player_name }}</option>
+                {% endfor %}
+            </select>
+            
+            <input type="submit" value="Adicionar Jogadores">
+        </form>
+    </div>
+    
+    <a href="{{ url_for('view_game_day', game_day_id=game_day.id) }}">Voltar para o Dia de Jogo</a>
+    
+    <!-- Adicione seus scripts JavaScript aqui, se necessário -->
+</body>
+</html>
