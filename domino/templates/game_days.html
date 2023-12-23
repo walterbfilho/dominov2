@@ -74,7 +74,7 @@
 
             <div>
                 {{ form.date.label }} 
-                {{ form.date() }}
+                <input type="date" id="date" name="date" value="{{ form.date.data.strftime('%Y-%m-%d') if form.date.data }}" class="form-control">
             </div>
 
             <div>

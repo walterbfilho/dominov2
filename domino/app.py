@@ -71,18 +71,17 @@ login.login_view = 'login'
 def load_user(id):
     return User.query.get(int(id))
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form)
+#@app.route('/register', methods=['GET', 'POST'])
+#def register():
+#    if current_user.is_authenticated:
+#        return redirect(url_for('home'))
+#    form = RegistrationForm()
+#    if form.validate_on_submit():
+#        user = User(username=form.username.data, email=form.email.data)
+#        user.set_password(form.password.data)
+#        db.session.add(user)
+#        db.session.commit()
+#        return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -265,8 +264,9 @@ def view_game_day(game_day_id):
 def view_game_days():
     form = GameDayForm()
     form.player_ids.choices = [(player.id, player.name) for player in Player.query.all()]
-    
+    print('to aqui 1')
     if form.validate_on_submit():
+        print('to aqui 1')
         game_day = GameDay(date=form.date.data)
         db.session.add(game_day)
         db.session.flush()
@@ -274,6 +274,7 @@ def view_game_days():
         selected_players = Player.query.filter(Player.id.in_(form.player_ids.data)).all()
 
         for player in selected_players:
+            print('to aqui 2')
             player.points += 100
             player.frequencia_dias += 1
             detail = GameDayPlayerDetails.query.filter_by(game_day=game_day, player=player).first()
@@ -289,6 +290,9 @@ def view_game_days():
         db.session.add(game_day)
         db.session.commit()
         return redirect(url_for('view_game_days'))
+    
+    if(form.errors):
+        print(f'ERRO NO FORM: {form.errors}')
     
     game_days = GameDay.query.all()
     return render_template('game_days.html', game_days=game_days, form=form)
