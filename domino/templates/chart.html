@@ -130,21 +130,21 @@
             {% endif %}
             <p>{{ max_points_player }}</p>
         </div>
-        <div class="player" id="playerFrequencia" style="display = 'none';">
+        <div class="player" id="playerFrequencia" style="display:'none';">
             <div class="classification">Maior Frequência de Dias</div>
             {% if max_frequencia_dias_image %}
                 <img src="{{ url_for('static', filename='uploads/' + max_frequencia_dias_image) }}" alt="Jogador com mais frequência de dias">
             {% endif %}
             <p>{{ max_frequencia_dias_player }}</p>
         </div>
-        <div class="player" id="playerBuchosDados" style="display = 'none';">
+        <div class="player" id="playerBuchosDados" style="display:'none';">
             <div class="classification">Mais Buchos Dados</div>
             {% if max_buchos_dados_image %}
                 <img src="{{ url_for('static', filename='uploads/' + max_buchos_dados_image) }}" alt="Jogador com mais buchos dados">
             {% endif %}
             <p>{{ max_buchos_dados_player }}</p>
         </div>
-        <div class="player" id="playerBuchosRecebidos" style="display = 'none';">
+        <div class="player" id="playerBuchosRecebidos" style="display: 'none';">
             <div class="classification">Mais Buchos Recebidos</div>
             {% if max_buchos_recebidos_image %}
                 <img src="{{ url_for('static', filename='uploads/' + max_buchos_recebidos_image) }}" alt="Jogador com mais buchos recebidos">
@@ -196,7 +196,7 @@
     function showGraph() {
         var graphId = document.getElementById('graphSelector').value;
         var type = document.getElementById('graphTypeSelector').value === 'bar' ? 'column' : 'line';
-
+        
         document.querySelectorAll('.player').forEach(player => {
             player.style.display = 'none';
         });

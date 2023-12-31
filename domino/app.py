@@ -21,7 +21,7 @@ from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
 load_dotenv()
-print(f"MYSQL AQUI O --> mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}")
+#print(f"MYSQL AQUI O --> mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}")
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
 
 UPLOAD_FOLDER = 'static/uploads'
@@ -82,6 +82,7 @@ def load_user(id):
 #        db.session.add(user)
 #        db.session.commit()
 #        return redirect(url_for('login'))
+#    return render_template('register.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -204,10 +205,10 @@ def reset_monthly_values():
         db.session.commit()
     return redirect(url_for('home'))
 
-def schedule_reset():
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(reset_monthly_values, 'interval', days=1)  # A cada 4 semanas
-    scheduler.start()
+#def schedule_reset():
+#    scheduler = BackgroundScheduler()
+#    scheduler.add_job(reset_monthly_values, 'interval', days=1)  # A cada 4 semanas
+#    scheduler.start()
 
 class GameDayPlayerDetails(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -297,6 +298,19 @@ def view_game_days():
     game_days = GameDay.query.all()
     return render_template('game_days.html', game_days=game_days, form=form)
 
+class RelatorioForm(FlaskForm):
+    meses = SelectMultipleField('Meses', coerce=int, validators=[DataRequired()])
+    submit = SubmitField('Buscar') 
+    
+@app.route('/relatorio_meses', methods=['GET', 'POST'])
+def view_relatorio():
+    game_days = GameDay.query.order_by(GameDay.date.desc()).all() 
+    options = []
+    for gd in game_days:
+        options.append(f'{gd.date.month}/{gd.date.year}')
+    form = RelatorioForm()
+    form.meses.choices = [options,options]
+    return render_template('relatorio_meses.html', form=form)
 
 @app.route('/')
 def home():
@@ -519,6 +533,6 @@ def delete_game_day_player(game_day_id, game_day_player_id):
 
 if __name__ == '__main__':
     with app.app_context():
-        schedule_reset()
+        #schedule_reset()
         db.create_all()
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
