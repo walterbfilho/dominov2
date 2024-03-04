@@ -344,11 +344,6 @@ def registrar_jogador():
         buchos_dados = form.buchos_dados.data, 
         buchos_recebidos = form.buchos_recebidos.data,
         frequencia_dias = form.frequencia_dias.data)
-
-        game_days = GameDay.query.order_by(GameDay.date.desc()).all() 
-        if(game_days):
-            player.points -= len(game_days) * 100 
-
         
         cropped_image_data = request.form.get('cropped_image')
         
@@ -493,22 +488,23 @@ def tabela_buchos():
     table_data = []
     for player in players:
         player_data = {"name": player.name}
-        total_bd = 0  # Inicializando o total de buchos dados para este jogador
-        total_br = 0  # Inicializando o total de buchos recebidos para este jogador
+        total_bd = 0  
+        total_br = 0  
         
         for game_day in game_days:
             detail = GameDayPlayerDetails.query.filter_by(game_day_id=game_day.id, player_id=player.id).first()
             if detail:
                 player_data[f"{game_day.date}_dados"] = detail.buchos_given
                 player_data[f"{game_day.date}_recebidos"] = detail.buchos_received
-                total_bd += detail.buchos_given  # Atualizando o total de buchos dados
-                total_br += detail.buchos_received  # Atualizando o total de buchos recebidos
+                total_bd += detail.buchos_given  
+                total_br += detail.buchos_received  
             else:
                 player_data[f"{game_day.date}_dados"] = 0
                 player_data[f"{game_day.date}_recebidos"] = 0
         
-        player_data["total_bd"] = total_bd  # Adicionando o total de buchos dados ao player_data
-        player_data["total_br"] = total_br  # Adicionando o total de buchos recebidos ao player_data
+        player_data["total_bd"] = total_bd
+        player_data["total_br"] = total_br  
+        player_data["total_points"] = player.points
         table_data.append(player_data)
         
     return render_template('tabela_buchos.html', table_data=table_data, game_days=game_days)

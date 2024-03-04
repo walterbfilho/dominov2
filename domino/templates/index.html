@@ -3,7 +3,15 @@
 {% block content %}
 
 <style>
-    /* Define uma cor de fundo suave para a página */
+    @keyframes blink {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    .blink {
+        animation: blink 0.5s infinite;
+    }
+
     body {
         background-color: #f4f4f4;
         font-family: 'Arial', sans-serif;
@@ -146,10 +154,26 @@
     }
 </style>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"></script>
 
 <div class="container">
     <img src="{{ url_for('static', filename='Reinado_dos_Buchos.png') }}" alt="Imagem de peças de dominó" width="300">
-
+    {% if current_user.is_authenticated %}
+        <div class="adjust-media" style="padding-top: 2%;display: flex; justify-content: space-between; flex-wrap: wrap;"> 
+            <a class="styled-link" href="{{ url_for('registrar_jogador') }}">Registrar</a>
+            <a class="styled-link" href="{{ url_for('chart') }}">Estatísticas do mês</a>
+            <a class="styled-link" href="{{ url_for('view_game_days') }}">Dias de Jogo</a>
+            <a class="styled-link" href="{{ url_for('tabela_buchos') }}">Visualização Detalhada dos Buchos</a>
+        </div>
+    {% else %}
+        <div class="adjust-media" style="padding-top: 2%;display: flex; justify-content: space-between; flex-wrap: wrap;"> 
+            <a class="styled-link" href="{{ url_for('chart') }}">Estatísticas do mês</a>
+            <a class="styled-link" href="{{ url_for('view_game_days') }}">Dias de Jogo</a>
+            <a class="styled-link" href="{{ url_for('login') }}">Login</a>
+            <a class="styled-link" href="{{ url_for('tabela_buchos') }}">Visualização Detalhada dos Buchos</a>
+        </div>
+    {% endif %}
     <h2>Jogadores Registrados:</h2>
     <div class="scrollable-table">
         <table class="players-table">
@@ -223,54 +247,28 @@
             </tbody>
         </table>
     </div>
-    {% if current_user.is_authenticated %}
-        <div class="adjust-media" style="padding-top: 2%;display: flex; justify-content: space-between; flex-wrap: wrap;"> 
-            <a class="styled-link" href="{{ url_for('registrar_jogador') }}">Registrar</a>
-            <a class="styled-link" href="{{ url_for('chart') }}">Estatísticas do mês</a>
-            <a class="styled-link" href="{{ url_for('view_game_days') }}">Dias de Jogo</a>
-            <a class="styled-link" href="{{ url_for('tabela_buchos') }}">Visualização Detalhada dos Buchos</a>
-        </div>
-    {% else %}
-        <div class="adjust-media" style="padding-top: 2%;display: flex; justify-content: space-between; flex-wrap: wrap;"> 
-            <a class="styled-link" href="{{ url_for('chart') }}">Estatísticas do mês</a>
-            <a class="styled-link" href="{{ url_for('view_game_days') }}">Dias de Jogo</a>
-            <a class="styled-link" href="{{ url_for('login') }}">Login</a>
-            <a class="styled-link" href="{{ url_for('tabela_buchos') }}">Visualização Detalhada dos Buchos</a>
-        </div>
-    {% endif %}
     <br>
     {% if current_user.is_authenticated %}
         <div class="adjust-media" style="padding-top: 2%;display: flex; justify-content: end; flex-wrap: wrap;"> 
             <a class="logout-button" href="{{ url_for('logout') }}">Logout</a>
         </div>
     {% endif %}
-</div>
-<script type="text/javascript">
-    $(document).ready(function() {
-        var isUserAuthenticated = {{ current_user.is_authenticated|tojson }};
-        
-        var columnDefs;
-        if(isUserAuthenticated) {
-            columnDefs = [
-                { "orderable": true, "targets": [0, 1, 2, 3, 4, 5, 6] },
-                { "orderable": false, "targets": [7] }
-            ];
-        } else {
-            columnDefs = [
-                { "orderable": true, "targets": [1, 2, 3, 4, 5, 6] },
-                { "orderable": false, "targets": [] }
-            ];
-        }
+    <script>
+        $(document).ready(function() {
+            $('.players-table').tablesorter({
+                sortList: [[0,0]],
+                headers: {
+                    0: { sorter: 'text' } 
+                }
+            });
 
-        $('.players-table').DataTable({
-            "paging": false,
-            "ordering": true,
-            "order": [[1, 'asc']],
-            "columnDefs": columnDefs,
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Portuguese-Brasil.json"
-            }
+            $('.players-table th').click(function() {
+                $(this).addClass('blink');
+                setTimeout(() => {
+                    $(this).removeClass('blink'); 
+                }, 200);
+            });
         });
-    });
-</script>
+    </script>
+</div>
 {% endblock %}

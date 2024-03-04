@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
 <style>
 
     .table-container {
@@ -94,6 +99,7 @@
                     {% endfor %}
                     <th>Total BD</th>
                     <th>Total BR</th>
+                    <th>Total Pontos</th>
                 </tr>
             </thead>
             <tbody>
@@ -106,6 +112,7 @@
                         {% endfor %}
                         <td>{{ player.total_bd }}</td>
                         <td>{{ player.total_br }}</td>
+                        <td>{{ player.total_points }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -116,18 +123,34 @@
     </div>
 </div>
 <script>
-    $(document).ready(function() {  
-        var isUserAuthenticated = {{ current_user.is_authenticated|tojson }};
+    $(document).ready(function() {
         $('#buchosTable').DataTable({
             "paging": false,
             "ordering": true,
-            "order": [[1, 'asc']],
             "columnDefs": [
-                { "orderable": false, "targets": [] }
+                { "type": "string", "targets": 0 }
             ],
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Portuguese-Brasil.json"
+            },
+            "dom": '<"top"i>rt<"bottom"flp><"clear">' // Remove os elementos de controle e ícones de seta
+        });
+        cont = 0
+        $('#buchosTable thead th:nth-last-child(2)').click(function() {
+            console.log('Teste');
+            if(cont % 2 == 0){
+                    $('#buchosTable').DataTable().order([
+                    [$(this).index(), 'asc'],
+                    [$(this).index() + 1, 'asc']
+                ]).draw();
+            }else{
+                $('#buchosTable').DataTable().order([
+                [$(this).index(), 'desc'],
+                [$(this).index() + 1, 'desc']
+            ]).draw();
             }
+            cont = cont + 1;
+
         });
     });
 </script>
