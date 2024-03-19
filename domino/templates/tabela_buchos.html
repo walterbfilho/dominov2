@@ -137,7 +137,7 @@
         });
         cont = 0
         $('#buchosTable thead th:nth-last-child(2)').click(function() {
-            console.log('Teste');
+            console.log('BR');
             if(cont % 2 == 0){
                     $('#buchosTable').DataTable().order([
                     [$(this).index(), 'asc'],
@@ -150,6 +150,23 @@
             ]).draw();
             }
             cont = cont + 1;
+
+        });
+        cont2 = 0
+        $('#buchosTable thead th:nth-last-child(3)').click(function() {
+            console.log('BD');
+            if(cont2 % 2 == 0){
+                    $('#buchosTable').DataTable().order([
+                    [$(this).index(), 'desc'],
+                    [$(this).index() + 2, 'desc']
+                ]).draw();
+            }else{
+                $('#buchosTable').DataTable().order([
+                [$(this).index(), 'asc'],
+                [$(this).index() + 2, 'asc']
+            ]).draw();
+            }
+            cont2 = cont2 + 1;
 
         });
     });

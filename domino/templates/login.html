@@ -76,6 +76,23 @@
         opacity: 0.65;
     }
 
+    .flash-error, .success {
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+    .flash-error {
+        color: #a94442;
+        background-color: #f2dede;
+        border-color: #ebccd1;
+    }
+    .success {
+        color: #3c763d;
+        background-color: #dff0d8;
+        border-color: #d6e9c6;
+    }
+
     @media screen and (max-width: 768px) {
         .container {
             margin: 10px;
@@ -92,6 +109,9 @@
     <h2>Login</h2>
     <form action="{{ url_for('login') }}" method="post">
         {{ form.hidden_tag() }}
+        {% if mensagem_erro %}
+            <div class="flash-error">{{ mensagem_erro }}</div>
+        {% endif %}
         <div class="input-form">
             {{ form.username.label }}<br>
             {{ form.username(size=32) }}
