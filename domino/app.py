@@ -15,7 +15,8 @@ from sqlalchemy import and_
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 from wtforms import (BooleanField, DateField, IntegerField, PasswordField,
-                     SelectMultipleField, StringField, SubmitField)
+                     SelectField, SelectMultipleField, StringField,
+                     SubmitField)
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 
 app = Flask(__name__)
@@ -299,18 +300,19 @@ def view_game_days():
     return render_template('game_days.html', game_days=game_days, form=form)
 
 class RelatorioForm(FlaskForm):
-    meses = SelectMultipleField('Meses', coerce=int, validators=[DataRequired()])
-    submit = SubmitField('Buscar') 
-    
-@app.route('/relatorio_meses', methods=['GET', 'POST'])
+    anos = SelectField('Anos', coerce=int, choices=[], validators=[DataRequired()])
+    submit = SubmitField('Buscar')
+
+@app.route('/relatorio_anos', methods=['GET', 'POST'])
 def view_relatorio():
-    game_days = GameDay.query.order_by(GameDay.date.desc()).all() 
-    options = []
-    for gd in game_days:
-        options.append(f'{gd.date.month}/{gd.date.year}')
+    game_days = GameDay.query.order_by(GameDay.date.desc()).all()
+    anos_disponiveis = sorted(set(gd.date.year for gd in game_days), reverse=True)
+    options = [(ano, str(ano)) for ano in anos_disponiveis]
     form = RelatorioForm()
-    form.meses.choices = [options,options]
-    return render_template('relatorio_meses.html', form=form)
+    form.anos.choices = options
+    if form.validate_on_submit():
+        print('Ano selecionado:', form.anos.data)
+    return render_template('relatorio_anos.html', form=form)
 
 @app.route('/')
 def home():
