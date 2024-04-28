@@ -300,18 +300,23 @@ def view_game_days():
     return render_template('game_days.html', game_days=game_days, form=form)
 
 class RelatorioForm(FlaskForm):
-    anos = SelectField('Anos', coerce=int, choices=[], validators=[DataRequired()])
+    de = SelectField('De', coerce=str, choices=[], validators=[DataRequired()])
+    ate = SelectField('Até', coerce=str, choices=[], validators=[DataRequired()])
     submit = SubmitField('Buscar')
 
 @app.route('/relatorio_anos', methods=['GET', 'POST'])
 def view_relatorio():
     game_days = GameDay.query.order_by(GameDay.date.desc()).all()
-    anos_disponiveis = sorted(set(gd.date.year for gd in game_days), reverse=True)
-    options = [(ano, str(ano)) for ano in anos_disponiveis]
+    anos_disponiveis_decrescente = sorted(set(f'{gd.date.month}/{gd.date.year}' for gd in game_days), reverse=True)
+    options_decrescente = [(ano, str(ano)) for ano in anos_disponiveis_decrescente]
+    anos_disponiveis_crescente = sorted(set(f'{gd.date.month}/{gd.date.year}' for gd in game_days), reverse=False)
+    options_crescente = [(ano, str(ano)) for ano in anos_disponiveis_crescente]
     form = RelatorioForm()
-    form.anos.choices = options
+    form.de.choices = [('', 'Nenhum')] + options_crescente
+    form.ate.choices = [('', 'Nenhum')] + options_crescente
     if form.validate_on_submit():
-        print('Ano selecionado:', form.anos.data)
+        print('Ano inicial:', form.de.data)
+        print('Ano final:', form.ate.data)
     return render_template('relatorio_anos.html', form=form)
 
 @app.route('/')

@@ -6,12 +6,48 @@
 <form action="{{ url_for('view_relatorio') }}" method="post">
     {{ form.hidden_tag() }}
     <div>
-        {{ form.anos.label }}<br>
-        {{ form.anos() }} 
+        {{ form.de.label(class="de-label") }}
+        {{ form.de(class="de-select") }} 
+    </div>
+    <div>
+        {{ form.ate.label(class="ate-label") }} 
+        {{ form.ate(class="ate-select") }} 
     </div>
     <div>
         <button type="submit">Buscar</button> 
     </div>
 </form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('.ate-select').prop('disabled', true);
+    $('.de-select option[value=""]').prop('disabled', true);
+
+    $('.de-select').change(function(){
+        var selectedDe = $(this).val();
+        $('.ate-select').val(selectedDe);
+        $('.ate-select').prop('disabled', false).find('option').each(function(){
+            if(selectedDe != ''){
+                var opcaoAte = $(this).val();
+                var mesAte = parseInt(opcaoAte.split('/')[0]);
+                var anoAte = parseInt(opcaoAte.split('/')[1]);
+                var mesDe = parseInt(selectedDe.split('/')[0]); 
+                var anoDe = parseInt(selectedDe.split('/')[1]); 
+                console.log('mesDe: ' + mesDe);
+                console.log('anoDe: ' + anoDe);
+                console.log('mesAte: ' + mesAte);
+                console.log('anoAte: ' + anoAte);
+                if((anoDe > anoAte) || (anoDe == anoAte && mesDe > mesAte)){
+                    $(this).prop('disabled', true);
+                } else {
+                    $(this).prop('disabled', false);
+                }
+            }
+        });
+        $('.ate-select option[value=""]').prop('disabled', true);
+    });
+});
+</script>
 
 {% endblock %}
