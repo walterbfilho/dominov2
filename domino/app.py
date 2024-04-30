@@ -5,7 +5,7 @@ from io import BytesIO
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
-from flask import Flask, flash, redirect, render_template, request, url_for
+from flask import Flask, flash, redirect, render_template, request, url_for, jsonify
 from flask_login import (LoginManager, UserMixin, current_user, login_required,
                          login_user, logout_user)
 from flask_sqlalchemy import SQLAlchemy
@@ -191,7 +191,7 @@ def chart():
         players = players
     )
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 @app.route('/reset_monthly_values', methods=['POST'])
@@ -306,18 +306,28 @@ class RelatorioForm(FlaskForm):
 
 @app.route('/relatorio_anos', methods=['GET', 'POST'])
 def view_relatorio():
-    game_days = GameDay.query.order_by(GameDay.date.desc()).all()
-    anos_disponiveis_decrescente = sorted(set(f'{gd.date.month}/{gd.date.year}' for gd in game_days), reverse=True)
-    options_decrescente = [(ano, str(ano)) for ano in anos_disponiveis_decrescente]
-    anos_disponiveis_crescente = sorted(set(f'{gd.date.month}/{gd.date.year}' for gd in game_days), reverse=False)
-    options_crescente = [(ano, str(ano)) for ano in anos_disponiveis_crescente]
+    game_days = GameDay.query.order_by(GameDay.date.asc()).all()
+    anos_disponiveis = set(f'{gd.date.month}/{gd.date.year}' for gd in game_days)
+    options = [(ano, str(ano)) for ano in anos_disponiveis]
+    ate_select = 0
     form = RelatorioForm()
-    form.de.choices = [('', 'Nenhum')] + options_crescente
-    form.ate.choices = [('', 'Nenhum')] + options_crescente
+    form.de.choices = [('', 'Nenhum')] + options
+    form.ate.choices = [('', 'Nenhum')] + options
+
     if form.validate_on_submit():
-        print('Ano inicial:', form.de.data)
-        print('Ano final:', form.ate.data)
-    return render_template('relatorio_anos.html', form=form)
+        mes_inicio, ano_inicio = map(int, form.de.data.split('/'))
+        mes_fim, ano_fim = map(int, form.ate.data.split('/'))
+        
+        data_inicio = datetime(ano_inicio, mes_inicio, 1)
+        data_fim = datetime(ano_fim, mes_fim, 1) + timedelta(days=31)
+        
+        game_days_intervalo = GameDay.query.filter(GameDay.date > data_inicio, GameDay.date < data_fim).all()
+        for gd in game_days_intervalo:
+            print('Registro dentro do intervalo:', gd.date)
+
+        ate_select = 1
+
+    return render_template('relatorio_anos.html', form=form, ate_select=ate_select)
 
 @app.route('/')
 def home():

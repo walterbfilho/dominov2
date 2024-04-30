@@ -2,6 +2,49 @@
 
 {% block content %}
 
+<style>
+    form {
+        margin: 20px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        max-width: 400px;
+    }
+
+    h3 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
 <h3>RELATÓRIO</h3>
 <form action="{{ url_for('view_relatorio') }}" method="post">
     {{ form.hidden_tag() }}
@@ -21,14 +64,26 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function(){
-    $('.ate-select').prop('disabled', true);
-    $('.de-select option[value=""]').prop('disabled', true);
+    {% if ate_select == 0 %}
+        $('.ate-select').prop('disabled', true);
+        $('.de-select option[value=""]').prop('disabled', true);
+    {% endif %}
 
-    $('.de-select').change(function(){
+});
+
+$('#relatorioForm').submit(function(event){
+
+    var mesInicio = $('#de-select').val();
+    var mesFim = $('#ate-select').val();
+    event.preventDefault();  
+
+});
+
+$('.de-select').change(function(){
         var selectedDe = $(this).val();
         $('.ate-select').val(selectedDe);
         $('.ate-select').prop('disabled', false).find('option').each(function(){
-            if(selectedDe != ''){
+            if(selectedDe != '' && $(this).val() != ''){ 
                 var opcaoAte = $(this).val();
                 var mesAte = parseInt(opcaoAte.split('/')[0]);
                 var anoAte = parseInt(opcaoAte.split('/')[1]);
@@ -47,7 +102,7 @@ $(document).ready(function(){
         });
         $('.ate-select option[value=""]').prop('disabled', true);
     });
-});
+
 </script>
 
 {% endblock %}
