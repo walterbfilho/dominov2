@@ -314,6 +314,7 @@ def view_relatorio():
     form.de.choices = [('', 'Nenhum')] + options
     form.ate.choices = [('', 'Nenhum')] + options
 
+    player_stats = {}
     if form.validate_on_submit():
         mes_inicio, ano_inicio = map(int, form.de.data.split('/'))
         mes_fim, ano_fim = map(int, form.ate.data.split('/'))
@@ -323,11 +324,22 @@ def view_relatorio():
         
         game_days_intervalo = GameDay.query.filter(GameDay.date > data_inicio, GameDay.date < data_fim).all()
         for gd in game_days_intervalo:
-            print('Registro dentro do intervalo:', gd.date)
+            details = GameDayPlayerDetails.query.filter_by(game_day_id=gd.id).all()
+            for detail in details:
+                player_id = detail.player_id
+                if player_id not in player_stats:
+                    player_info = Player.query.get(player_id)
+                    player_stats[player_id] = {
+                        'name': player_info.name,
+                        'buchos_dados': 0,
+                        'buchos_recebidos': 0
+                    }
+                player_stats[player_id]['buchos_dados'] += detail.buchos_given
+                player_stats[player_id]['buchos_recebidos'] += detail.buchos_received
 
         ate_select = 1
 
-    return render_template('relatorio_anos.html', form=form, ate_select=ate_select)
+    return render_template('relatorio_anos.html', form=form, ate_select=ate_select, player_stats=player_stats)
 
 @app.route('/')
 def home():

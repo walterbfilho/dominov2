@@ -3,45 +3,76 @@
 {% block content %}
 
 <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        line-height: 1.6;
+    }
+
     form {
-        margin: 20px;
+        margin: 20px auto;
         padding: 20px;
-        border: 1px solid #ccc;
+        border: 1px solid #ddd;
         border-radius: 5px;
-        background-color: #f9f9f9;
+        background-color: #ffffff;
         max-width: 400px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
     h3 {
         font-size: 24px;
+        color: #333;
+        text-align: center;
         margin-bottom: 20px;
+    }
+
+    h4 {
+        margin-top: 20px;
+        text-align: center;
+        color: #333;
     }
 
     label {
         display: block;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
+        color: #666;
     }
 
-    select {
+    select, button {
         width: 100%;
         padding: 10px;
         margin-bottom: 10px;
-        border: 1px solid #ccc;
+        border: 1px solid #ddd;
         border-radius: 5px;
         box-sizing: border-box;
     }
 
     button {
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
+        background-color: #5cb85c;
+        color: white;
+        font-weight: bold;
     }
 
     button:hover {
-        background-color: #0056b3;
+        background-color: #4cae4c;
+    }
+
+    table {
+        width: 90%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f9f9f9;
     }
 </style>
 
@@ -60,6 +91,30 @@
         <button type="submit">Buscar</button> 
     </div>
 </form>
+
+{% if player_stats %}
+<h4>Estatísticas dos Jogadores</h4>
+<table>
+    <thead>
+        <tr>
+            <th>Nome do Jogador</th>
+            <th>Buchos Dados</th>
+            <th>Buchos Recebidos</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for player_id, stats in player_stats.items() %}
+        <tr>
+            <td>{{ stats.name }}</td>
+            <td>{{ stats.buchos_dados }}</td>
+            <td>{{ stats.buchos_recebidos }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p style="text-align: center;">Nenhum dado para exibir. Por favor, selecione um intervalo de datas e clique em Buscar.</p>
+{% endif %}
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -105,4 +160,8 @@ $('.de-select').change(function(){
 
 </script>
 
+
 {% endblock %}
+
+
+
