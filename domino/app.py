@@ -5,7 +5,8 @@ from io import BytesIO
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
-from flask import Flask, flash, redirect, render_template, request, url_for, jsonify
+from flask import (Flask, flash, jsonify, redirect, render_template, request,
+                   url_for)
 from flask_login import (LoginManager, UserMixin, current_user, login_required,
                          login_user, logout_user)
 from flask_sqlalchemy import SQLAlchemy
@@ -305,7 +306,7 @@ class RelatorioForm(FlaskForm):
     submit = SubmitField('Buscar')
 
 @app.route('/relatorio_anos', methods=['GET', 'POST'])
-def view_relatorio():
+def relatorio_anos():
     game_days = GameDay.query.order_by(GameDay.date.asc()).all()
     anos_disponiveis = set(f'{gd.date.month}/{gd.date.year}' for gd in game_days)
     options = [(ano, str(ano)) for ano in anos_disponiveis]
