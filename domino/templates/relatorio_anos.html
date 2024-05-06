@@ -88,9 +88,15 @@
         {{ form.ate(class="ate-select") }} 
     </div>
     <div>
+        <label for="ordenacao">Ordenar por:</label>
+        <select name="ordenacao" id="ordenacao">
+            <option value="buchos_dados">Buchos Dados</option>
+            <option value="buchos_recebidos">Buchos Recebidos</option>
+        </select>
         <button type="submit">Buscar</button> 
     </div>
 </form>
+
 
 {% if player_stats %}
 <h4>Estatísticas dos Jogadores</h4>
