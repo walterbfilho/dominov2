@@ -338,6 +338,12 @@ def relatorio_anos():
                 player_stats[player_id]['buchos_dados'] += detail.buchos_given
                 player_stats[player_id]['buchos_recebidos'] += detail.buchos_received
 
+        ordenacao = request.form.get('ordenacao')  
+        if ordenacao == 'buchos_dados':
+            player_stats = dict(sorted(player_stats.items(), key=lambda x: x[1]['buchos_dados'], reverse=True))
+        elif ordenacao == 'buchos_recebidos':
+            player_stats = dict(sorted(player_stats.items(), key=lambda x: x[1]['buchos_recebidos'], reverse=True))
+
         ate_select = 1
 
     return render_template('relatorio_anos.html', form=form, ate_select=ate_select, player_stats=player_stats)
@@ -345,7 +351,7 @@ def relatorio_anos():
 @app.route('/')
 def home():
     order_by = request.args.get('order_by', 'points')
-    order_type = request.args.get('order_type', 'desc')  # Novo parâmetro para tipo de ordenação
+    order_type = request.args.get('order_type', 'desc') 
 
     if order_by not in ['name', 'points', 'frequencia_dias', 'buchos_dados', 'buchos_recebidos']:
         order_by = 'points'
