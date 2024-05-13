@@ -333,10 +333,12 @@ def relatorio_anos():
                     player_stats[player_id] = {
                         'name': player_info.name,
                         'buchos_dados': 0,
-                        'buchos_recebidos': 0
+                        'buchos_recebidos': 0,
+                        'frequencia': 0
                     }
                 player_stats[player_id]['buchos_dados'] += detail.buchos_given
                 player_stats[player_id]['buchos_recebidos'] += detail.buchos_received
+                player_stats[player_id]['frequencia'] += 1
 
         ordenacao = request.form.get('ordenacao')  
         if ordenacao == 'buchos_dados':

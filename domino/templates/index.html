@@ -69,6 +69,13 @@
         border-radius: 12px;
     }
 
+    .adjust-media{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
     button:hover {
         background-color: #45a049;
     }
@@ -129,21 +136,60 @@
         color: inherit; /* Mantém a cor de texto ao passar o mouse */
     }
 
+    .podium {
+        display: flex;
+        justify-content: center;
+        align-items: end;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .place {
+        width: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        color: black;
+        font-size: 16px;
+        padding: 10px;
+        margin: 0 5px;
+    }
+
+    .first {
+        height: 150px;
+        background-color: #FFD700; /* Ouro */
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .second {
+        height: 100px;
+        background-color: #C0C0C0; /* Prata */
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .third {
+        height: 80px;
+        background-color: #CD7F32; /* Bronze */
+        box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .top-podios{
+        display: flex;
+        align-items: center;
+    }
+
     /* Define estilos para telas menores */
     @media (max-width: 768px) {
         .container {
             width: 95%;
         }
 
-        .adjust-media{
+        .adjust-media {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .styled-link, .logout-button {
-            display: block;
-            margin: 10px 0;
+            flex-direction: row;
+            align-items: flex-end; /* Alinha os itens à direita */
+            padding-top: 2%; /* Mantém o padding no topo */
+            width: 100%; 
         }
 
         img {
@@ -156,11 +202,28 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <div class="container">
-    <img src="{{ url_for('static', filename='Reinado_dos_Buchos.png') }}" alt="Imagem de peças de dominó" width="300">
+    <div class="top-podios">
+        <div class="podium">
+            <div>
+                Walter
+                <div class="place second">2º Lugar</div>
+            </div>
+            <div class="place first">1º Lugar</div>
+            <div class="place third">3º Lugar</div>
+        </div>
+        <img src="{{ url_for('static', filename='Reinado_dos_Buchos.png') }}" alt="Imagem de peças de dominó" width="300">
+        <div class="podium">
+            <div class="place second">2º Lugar</div>
+            <div class="place first">1º Lugar</div>
+            <div class="place third">3º Lugar</div>
+        </div>
+    </div>
     {% if current_user.is_authenticated %}
-        <div class="adjust-media" style="padding-top: 2%;display: flex; justify-content: space-between; flex-wrap: wrap;"> 
+        <div class="adjust-media"> 
             <a class="styled-link" href="{{ url_for('registrar_jogador') }}">Registrar</a>
             <a class="styled-link" href="{{ url_for('chart') }}">Estatísticas do mês</a>
             <a class="styled-link" href="{{ url_for('relatorio_anos') }}">Relatório</a>
@@ -168,7 +231,7 @@
             <a class="styled-link" href="{{ url_for('tabela_buchos') }}">Visualização Detalhada dos Buchos</a>
         </div>
     {% else %}
-        <div class="adjust-media" style="padding-top: 2%;display: flex; justify-content: space-between; flex-wrap: wrap;"> 
+        <div class="adjust-media"> 
             <a class="styled-link" href="{{ url_for('chart') }}">Estatísticas do mês</a>
             <a class="styled-link" href="{{ url_for('view_game_days') }}">Dias de Jogo</a>
             <a class="styled-link" href="{{ url_for('relatorio_anos') }}">Relatório</a>
@@ -176,78 +239,80 @@
             <a class="styled-link" href="{{ url_for('tabela_buchos') }}">Visualização Detalhada dos Buchos</a>
         </div>
     {% endif %}
-    <h2>Jogadores Registrados:</h2>
-    <div class="scrollable-table">
-        <table class="players-table">
-            <thead>
-                <tr>
-                    <th class="name-column">
-                        Nome 
-                    </th>
-                    <th>
-                        Pontos
-                    </th>
-                    <th>
-                        Frequência
-                    </th>
-                    <th class="buchos-dados">
-                        Buchos Dados 
-                    </th>
-                    <th class="buchos-recebidos">
-                        Buchos Recebidos
-                    </th>
-                    <th>
-                        Rei dos Buchos
-                    </th>
-                    <th>
-                        Buchudo do Mês
-                    </th>
-                    {% if current_user.is_authenticated %}
-                        <th>Ações</th>
-                    {% endif %}
-                </tr>
-            </thead>        
-            <tbody>
-                {% if players %}
-                    {% for player in players %}
+    <div id="accordion">
+        <h2>Jogadores Registrados:</h2>
+        <div class="scrollable-table">
+            <table class="players-table">
+                <thead>
                     <tr>
-                        <td>   
-                            {% if player.image_filename %}
-                                <img src="{{ url_for('static', filename='uploads/' + player.image_filename) }}" alt="Imagem de {{ player.name }}" width="150">
-                            {% endif %}                 
-                            <form method="get" action="{{ url_for('view_player', player_id=player.id) }}" style="display: inline;">
-                                <button type="submit">{{ player.name }}</button>
-                            </form>
-                        </td>
-                        <td>{{ player.points }}</td>
-                        <td>{{ player.frequencia_dias }}</td>
-                        <td>{{ player.buchos_dados }}</td>
-                        <td>{{ player.buchos_recebidos }}</td>
-                        {% if player.frequencia_dias > 0 %}
-                            <td>{{ (player.buchos_dados / player.frequencia_dias)|round(2) }}</td> <!-- Rei dos Buchos -->
-                            <td>{{ (player.buchos_recebidos / player.frequencia_dias)|round(2) }}</td> <!-- Buchudo do Mês -->
-                        {% else %}
-                            <td>0</td> <!-- Rei dos Buchos -->
-                            <td>0</td> <!-- Buchudo do Mês -->
-                        {% endif %}
-
+                        <th class="name-column">
+                            Nome 
+                        </th>
+                        <th>
+                            Pontos
+                        </th>
+                        <th>
+                            Frequência
+                        </th>
+                        <th class="buchos-dados">
+                            Buchos Dados 
+                        </th>
+                        <th class="buchos-recebidos">
+                            Buchos Recebidos
+                        </th>
+                        <th>
+                            Rei dos Buchos
+                        </th>
+                        <th>
+                            Buchudo do Mês
+                        </th>
                         {% if current_user.is_authenticated %}
-                            <td>
-                                <div class="action-buttons">
-                                    <form method="post" action="{{ url_for('edit_player', player_id=player.id) }}">
-                                        <button type="submit">Editar</button>
-                                    </form>
-                                    <form method="post" action="{{ url_for('delete_player', player_id=player.id) }}">
-                                        <button type="submit" onclick="return confirm('Tem certeza que deseja excluir?');">Excluir</button>
-                                    </form>
-                                </div>
-                            </td>
+                            <th>Ações</th>
                         {% endif %}
                     </tr>
-                    {% endfor %}
-                {% endif %}
-            </tbody>
-        </table>
+                </thead>        
+                <tbody>
+                    {% if players %}
+                        {% for player in players %}
+                        <tr>
+                            <td>   
+                                {% if player.image_filename %}
+                                    <img src="{{ url_for('static', filename='uploads/' + player.image_filename) }}" alt="Imagem de {{ player.name }}" width="150">
+                                {% endif %}                 
+                                <form method="get" action="{{ url_for('view_player', player_id=player.id) }}" style="display: inline;">
+                                    <button type="submit">{{ player.name }}</button>
+                                </form>
+                            </td>
+                            <td>{{ player.points }}</td>
+                            <td>{{ player.frequencia_dias }}</td>
+                            <td>{{ player.buchos_dados }}</td>
+                            <td>{{ player.buchos_recebidos }}</td>
+                            {% if player.frequencia_dias > 0 %}
+                                <td>{{ (player.buchos_dados / player.frequencia_dias)|round(2) }}</td> <!-- Rei dos Buchos -->
+                                <td>{{ (player.buchos_recebidos / player.frequencia_dias)|round(2) }}</td> <!-- Buchudo do Mês -->
+                            {% else %}
+                                <td>0</td> <!-- Rei dos Buchos -->
+                                <td>0</td> <!-- Buchudo do Mês -->
+                            {% endif %}
+
+                            {% if current_user.is_authenticated %}
+                                <td>
+                                    <div class="action-buttons">
+                                        <form method="post" action="{{ url_for('edit_player', player_id=player.id) }}">
+                                            <button type="submit">Editar</button>
+                                        </form>
+                                        <form method="post" action="{{ url_for('delete_player', player_id=player.id) }}">
+                                            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir?');">Excluir</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
     </div>
     <br>
     {% if current_user.is_authenticated %}
@@ -257,6 +322,11 @@
     {% endif %}
     <script>
         $(document).ready(function() {
+            $("#accordion").accordion({
+                collapsible: true,
+                active: false
+             });
+
             $('.players-table').tablesorter({
                 sortList: [[0,0]],
                 headers: {
