@@ -207,19 +207,25 @@
 
 <div class="container">
     <div class="top-podios">
-        <div class="podium">
-            <div>
-                Walter
-                <div class="place second">2º Lugar</div>
+        <div class="top-bd">
+            <h1>Top Buchos Dados</h1>
+            <div class="podium">
+                <div>
+                    Walter
+                    <div class="place second">2º Lugar</div>
+                </div>
+                <div class="place first">1º Lugar</div>
+                <div class="place third">3º Lugar</div>
             </div>
-            <div class="place first">1º Lugar</div>
-            <div class="place third">3º Lugar</div>
         </div>
         <img src="{{ url_for('static', filename='Reinado_dos_Buchos.png') }}" alt="Imagem de peças de dominó" width="300">
-        <div class="podium">
-            <div class="place second">2º Lugar</div>
-            <div class="place first">1º Lugar</div>
-            <div class="place third">3º Lugar</div>
+        <div class="top-br">
+            <h1>Top Buchos Recebidos</h1>
+            <div class="podium">
+                <div class="place second">2º Lugar</div>
+                <div class="place first">1º Lugar</div>
+                <div class="place third">3º Lugar</div>
+            </div>
         </div>
     </div>
     {% if current_user.is_authenticated %}
