@@ -2,7 +2,8 @@ import base64
 import os
 from datetime import datetime, timedelta
 from io import BytesIO
-
+from operator import itemgetter
+import calendar
 from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
 from flask import (Flask, flash, jsonify, redirect, render_template, request,
@@ -370,14 +371,14 @@ def home():
     
     data_atual = datetime.now()
     primeiro_dia_mes = data_atual.replace(day=1)
-    ultimo_dia_mes = data_atual.replace(day=1) + timedelta(days=31)
-    ultimo_dia_mes = ultimo_dia_mes.replace(day=1) - timedelta(days=1)
 
+    ultimo_dia_mes = primeiro_dia_mes.replace(day=calendar.monthrange(data_atual.year, data_atual.month)[1])
     game_days_intervalo = GameDay.query.filter(GameDay.date >= primeiro_dia_mes, GameDay.date <= ultimo_dia_mes).all()
 
     player_stats = {}
 
     for gd in game_days_intervalo:
+        print(f'GameDay: --> {gd.date}')
         details = GameDayPlayerDetails.query.filter_by(game_day_id=gd.id).all()
         for detail in details:
             player_id = detail.player_id
@@ -385,6 +386,7 @@ def home():
                 player_info = Player.query.get(player_id)
                 player_stats[player_id] = {
                     'name': player_info.name,
+                    'image_filename': player_info.image_filename,
                     'buchos_dados': 0,
                     'buchos_recebidos': 0,
                     'frequencia': 0
@@ -393,8 +395,15 @@ def home():
             player_stats[player_id]['buchos_recebidos'] += detail.buchos_received
             player_stats[player_id]['frequencia'] += 1
 
-    return render_template('index.html', players=players, game_days=game_days, order_by=order_by, order_type=order_type)
-
+    top_buchos_dados_ord = sorted(player_stats.items(), key=lambda x: x[1]['buchos_dados'], reverse=True)[:3]
+    top_buchos_dados = [{'id': pid, 'image_filename': stats['image_filename'], 'buchos_recebidos': stats['buchos_recebidos'], 'name': stats['name'], 'buchos_dados': stats['buchos_dados']} for pid, stats in top_buchos_dados_ord]
+    print(f'TOP BUCHOS DADOS --> {top_buchos_dados}')
+    top_buchos_recebidos_ord = sorted(player_stats.items(), key=lambda x: x[1]['buchos_recebidos'], reverse=True)[:3]
+    top_buchos_recebidos = [{'id': pid, 'image_filename': stats['image_filename'], 'buchos_recebidos': stats['buchos_recebidos'], 'name': stats['name'], 'buchos_dados': stats['buchos_dados']} for pid, stats in top_buchos_recebidos_ord]
+    print(f'TOP BUCHOS RECEBIDOS --> {top_buchos_recebidos}')
+    return render_template('index.html', players=players, 
+    game_days=game_days, order_by=order_by, order_type=order_type, 
+    top_buchos_dados=top_buchos_dados, top_buchos_recebidos=top_buchos_recebidos)
 
 @app.route('/registrar_jogador', methods=['GET', 'POST'])
 def registrar_jogador():
