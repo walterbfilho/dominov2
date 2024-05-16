@@ -3,6 +3,7 @@ import os
 from datetime import datetime, timedelta
 from io import BytesIO
 from operator import itemgetter
+from collections import defaultdict
 import calendar
 from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
@@ -298,8 +299,14 @@ def view_game_days():
     if(form.errors):
         print(f'ERRO NO FORM: {form.errors}')
     
-    game_days = GameDay.query.all()
-    return render_template('game_days.html', game_days=game_days, form=form)
+    game_days = GameDay.query.order_by(GameDay.date.desc()).all()
+    grouped_game_days = defaultdict(list)
+        
+    for game_day in game_days:
+        month_year = game_day.date.strftime('%m-%Y')
+        grouped_game_days[month_year].append(game_day)
+    
+    return render_template('game_days.html', grouped_game_days=grouped_game_days, form=form)
 
 class RelatorioForm(FlaskForm):
     de = SelectField('De', coerce=str, choices=[], validators=[DataRequired()])
