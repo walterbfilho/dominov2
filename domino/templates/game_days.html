@@ -1,145 +1,107 @@
-    {% extends "base.html" %}
+{% extends "base.html" %}
 
-    {% block content %}
-    <style>
-        .game-days-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
+{% block content %}
+<style>
+    /* Estilos personalizados */
+    .game-days-container {
+        max-width: 800px;
+        height: fit-content;
+        margin: 0 auto;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
 
-        .game-days-container h2, .game-days-container h3 {
-            margin-bottom: 20px;
-        }
+    .game-days-container h2, .game-days-container h3 {
+        margin-bottom: 20px;
+    }
 
-        .game-days-container form div {
-            margin-bottom: 10px;
-        }
+    .game-days-container form div {
+        margin-bottom: 10px;
+    }
 
-        .game-days-container label {
-            display: block;
-            margin-bottom: 5px;
-        }
+    .game-days-container label {
+        display: block;
+        margin-bottom: 5px;
+    }
 
-        .game-days-container input, .game-days-container select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
+    .game-days-container input, .game-days-container select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
 
-        .game-days-container input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+    .game-days-container input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
 
-        .game-days-container input[type="submit"]:hover {
-            background-color: #45a049;
-        }
+    .game-days-container input[type="submit"]:hover {
+        background-color: #45a049;
+    }
 
-        .game-day {
-            margin-top: 10px;
-        }
+    .game-day {
+        margin-top: 10px;
+    }
 
-        .back-button {
-            display: block;
-            margin-top: 20px;
-            text-align: center;
-            text-decoration: none;
-            color: #333;
-        }
+    .back-button {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+        color: #333;
+    }
 
-        .back-button:hover {
-            text-decoration: underline;
-        }
+    .back-button:hover {
+        text-decoration: underline;
+    }
 
-        .divider {
-            margin: 30px 0;
-        }
+    .divider {
+        margin: 30px 0;
+    }
+</style>
 
-        .card-header .btn-link {
-    color: #333;
-    font-weight: bold;
-    text-decoration: none;
-    transition: color 0.2s ease-in-out;
-}
+<div class="game-days-container">
 
-.card-header .btn-link:hover, .card-header .btn-link:focus {
-    color: #0056b3;  /* Ou qualquer cor que se encaixe melhor com o seu tema */
-    text-decoration: none;
-}
-
-.card {
-    border: none;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-.card:last-child {
-    border-bottom: none;
-}
-
-.card-body {
-    padding: 20px;
-    background-color: #f8f9fa; /* Cor de fundo leve para o conteúdo expandido */
-}
-
-.collapse.show {
-    transition: height 0.3s ease-in;
-}
-
-    </style>
-
-    <div class="game-days-container">
-        {% if current_user.is_authenticated %}
+    <!-- Seção para registrar um novo dia de jogo -->
+    {% if current_user.is_authenticated %}
         <h3>Registrar Novo Dia de Jogo</h3>
         <form method="post">
             {{ form.hidden_tag() }}
+
             <div>
-                {{ form.date.label }}
+                {{ form.date.label }} 
                 <input type="date" id="date" name="date" value="{{ form.date.data.strftime('%Y-%m-%d') if form.date.data }}" class="form-control">
             </div>
+
             <div>
                 {{ form.player_ids.label }}:<br>
                 {{ form.player_ids() }}
             </div>
+
             <div>
                 {{ form.submit() }}
             </div>
         </form>
-        <div class="divider"><hr></div>
-        {% endif %}
 
-        <div id="accordion">
-            {% for month_year, days in grouped_game_days.items() %}
-            <div class="card">
-                <div class="card-header" id="heading{{ loop.index }}">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="false" aria-controls="collapse{{ loop.index }}">
-                            Jogos de {{ month_year }}
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}" data-parent="#accordion">
-                    <div class="card-body">
-                        {% for game_day in days %}
-                        <div class="game-day">
-                            <a href="{{ url_for('view_game_day', game_day_id=game_day.id) }}">
-                                {{ game_day.date.strftime('%d-%m-%Y') }}
-                            </a>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
+            <!-- Divisão visual entre registro e visualização -->
+        <div class="divider">
+            <hr>
         </div>
-    </div>
+    {% endif %}
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    {% endblock %}
+    <!-- Seção para listar os dias de jogo existentes -->
+    <h3>Dias de Jogo Registrados</h3>
+    {% for game_day in game_days %}
+        <div class="game-day">
+            <a href="{{ url_for('view_game_day', game_day_id=game_day.id) }}">
+                {{ game_day.date.strftime('%d-%m-%Y') }}
+            </a>
+        </div>
+    {% endfor %}
+    <a class="back-button" href="{{ url_for('home') }}">Voltar</a>
+</div>
+{% endblock %}
