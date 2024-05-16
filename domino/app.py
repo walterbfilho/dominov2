@@ -298,7 +298,7 @@ def view_game_days():
     if(form.errors):
         print(f'ERRO NO FORM: {form.errors}')
     
-    game_days = GameDay.query.all()
+    game_days = GameDay.query.order_by(GameDay.date.desc()).all()
     return render_template('game_days.html', game_days=game_days, form=form)
 
 class RelatorioForm(FlaskForm):

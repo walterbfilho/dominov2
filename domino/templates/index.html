@@ -230,6 +230,7 @@
         <div class="top-bd">
             <h1 style="text-align: center">Top Buchos Dados</h1>
             <div class="podium">
+                {% if top_buchos_dados[1] %}
                 <div class="second-div">
                     {{ top_buchos_dados[1].name }}
                     {% if top_buchos_dados[1].image_filename %}
@@ -238,6 +239,8 @@
                     <div class="place second">2º Lugar</div>
                     <p>{{ top_buchos_dados[1].buchos_dados }} pontos</p>
                 </div>
+                {% endif %}  
+                {% if top_buchos_dados[0] %}
                 <div class="first-div">
                     {{ top_buchos_dados[0].name }}
                     {% if top_buchos_dados[0].image_filename %}
@@ -246,6 +249,8 @@
                     <div class="place first">1º Lugar</div>
                     <p>{{ top_buchos_dados[0].buchos_dados }} pontos</p>
                 </div>
+                {% endif %}  
+                {% if top_buchos_dados[2] %}
                 <div class="third-div">
                     {{ top_buchos_dados[2].name }}
                     {% if top_buchos_dados[2].image_filename %}
@@ -254,12 +259,14 @@
                     <div class="place third">3º Lugar</div>
                     <p>{{ top_buchos_dados[2].buchos_dados }} pontos</p>
                 </div>
+                {% endif %}  
             </div>
         </div>
         <img src="{{ url_for('static', filename='Reinado_dos_Buchos.png') }}" alt="Imagem de peças de dominó" width="300">
         <div class="top-br">
             <h1 style="text-align: center">Top Buchos Recebidos</h1>
             <div class="podium">
+                {% if top_buchos_recebidos[1] %}
                 <div class="second-div">
                     {{ top_buchos_recebidos[1].name }}
                     {% if top_buchos_recebidos[1].image_filename %}
@@ -268,6 +275,8 @@
                     <div class="place second">2º Lugar</div>
                     <p>{{ top_buchos_recebidos[1].buchos_recebidos }} pontos</p>
                 </div>
+                {% endif %}  
+                {% if top_buchos_recebidos[0] %}
                 <div class="first-div">
                     {{ top_buchos_recebidos[0].name }}
                     {% if top_buchos_recebidos[0].image_filename %}
@@ -276,6 +285,8 @@
                     <div class="place first">1º Lugar</div>
                     <p>{{ top_buchos_recebidos[0].buchos_recebidos }} pontos</p>
                 </div>
+                {% endif %} 
+                {% if top_buchos_recebidos[2] %}
                 <div class="third-div">
                     {{ top_buchos_recebidos[2].name }}
                     {% if top_buchos_recebidos[2].image_filename %}
@@ -284,6 +295,7 @@
                     <div class="place third">3º Lugar</div>
                     <p>{{ top_buchos_recebidos[2].buchos_recebidos }} pontos</p>
                 </div>
+                {% endif %} 
             </div>
         </div>
     </div>
