@@ -1,9 +1,11 @@
 import base64
+import calendar
 import os
 from datetime import datetime, timedelta
 from io import BytesIO
 from operator import itemgetter
-import calendar
+from babel.dates import format_date
+
 from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
 from flask import (Flask, flash, jsonify, redirect, render_template, request,
@@ -268,17 +270,14 @@ def view_game_day(game_day_id):
 def view_game_days():
     form = GameDayForm()
     form.player_ids.choices = [(player.id, player.name) for player in Player.query.all()]
-    print('to aqui 1')
+
     if form.validate_on_submit():
-        print('to aqui 1')
         game_day = GameDay(date=form.date.data)
         db.session.add(game_day)
         db.session.flush()
-        allplayers = Player.query.all()
         selected_players = Player.query.filter(Player.id.in_(form.player_ids.data)).all()
 
         for player in selected_players:
-            print('to aqui 2')
             player.points += 100
             player.frequencia_dias += 1
             detail = GameDayPlayerDetails.query.filter_by(game_day=game_day, player=player).first()
@@ -286,20 +285,27 @@ def view_game_days():
                 detail = GameDayPlayerDetails(game_day=game_day, player=player)
                 db.session.add(detail)
 
+        allplayers = Player.query.all()
         for player in allplayers:
             if player not in selected_players:
                 player.points -= 100
 
-        game_day.players = selected_players
-        db.session.add(game_day)
         db.session.commit()
         return redirect(url_for('view_game_days'))
-    
-    if(form.errors):
+
+    if form.errors:
         print(f'ERRO NO FORM: {form.errors}')
-    
+
     game_days = GameDay.query.order_by(GameDay.date.desc()).all()
-    return render_template('game_days.html', game_days=game_days, form=form)
+    grouped_game_days = {}
+    for game_day in game_days:
+        key = format_date(game_day.date, "MMMM 'de' yyyy", locale='pt_BR')
+        if key not in grouped_game_days:
+            grouped_game_days[key] = []
+        grouped_game_days[key].append(game_day)
+
+    return render_template('game_days.html', grouped_game_days=grouped_game_days, form=form)
+
 
 class RelatorioForm(FlaskForm):
     de = SelectField('De', coerce=str, choices=[], validators=[DataRequired()])
