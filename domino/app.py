@@ -4,9 +4,9 @@ import os
 from datetime import datetime, timedelta
 from io import BytesIO
 from operator import itemgetter
-from babel.dates import format_date
 
 from apscheduler.schedulers.background import BackgroundScheduler
+from babel.dates import format_date
 from dotenv import load_dotenv
 from flask import (Flask, flash, jsonify, redirect, render_template, request,
                    url_for)
@@ -401,11 +401,36 @@ def home():
             player_stats[player_id]['buchos_recebidos'] += detail.buchos_received
             player_stats[player_id]['frequencia'] += 1
 
-    top_buchos_dados_ord = sorted(player_stats.items(), key=lambda x: x[1]['buchos_dados'], reverse=True)[:3]
-    top_buchos_dados = [{'id': pid, 'image_filename': stats['image_filename'], 'buchos_recebidos': stats['buchos_recebidos'], 'name': stats['name'], 'buchos_dados': stats['buchos_dados']} for pid, stats in top_buchos_dados_ord]
+    top_buchos_dados_ord = sorted(
+        player_stats.items(), 
+        key=lambda x: (x[1]['buchos_dados'], -x[1]['buchos_recebidos']), 
+        reverse=True
+    )[:3]
+
+    top_buchos_dados = [
+        {'id': pid, 
+        'image_filename': stats['image_filename'], 
+        'buchos_recebidos': stats['buchos_recebidos'], 
+        'name': stats['name'], 
+        'buchos_dados': stats['buchos_dados']} 
+        for pid, stats in top_buchos_dados_ord
+    ]
     print(f'TOP BUCHOS DADOS --> {top_buchos_dados}')
-    top_buchos_recebidos_ord = sorted(player_stats.items(), key=lambda x: x[1]['buchos_recebidos'], reverse=True)[:3]
-    top_buchos_recebidos = [{'id': pid, 'image_filename': stats['image_filename'], 'buchos_recebidos': stats['buchos_recebidos'], 'name': stats['name'], 'buchos_dados': stats['buchos_dados']} for pid, stats in top_buchos_recebidos_ord]
+
+    top_buchos_recebidos_ord = sorted(
+        player_stats.items(), 
+        key=lambda x: (-x[1]['buchos_recebidos'], x[1]['buchos_dados'])
+    )[:3]
+
+    top_buchos_recebidos = [
+        {'id': pid, 
+        'image_filename': stats['image_filename'], 
+        'buchos_recebidos': stats['buchos_recebidos'], 
+        'name': stats['name'], 
+        'buchos_dados': stats['buchos_dados']} 
+        for pid, stats in top_buchos_recebidos_ord
+    ]
+
     print(f'TOP BUCHOS RECEBIDOS --> {top_buchos_recebidos}')
     return render_template('index.html', players=players, 
     game_days=game_days, order_by=order_by, order_type=order_type, 
