@@ -349,9 +349,9 @@ def relatorio_anos():
 
         ordenacao = request.form.get('ordenacao')  
         if ordenacao == 'buchos_dados':
-            player_stats = dict(sorted(player_stats.items(), key=lambda x: x[1]['buchos_dados'], reverse=True))
+            player_stats = dict(sorted(player_stats.items(), key=lambda x: (-x[1]['buchos_dados'], x[1]['buchos_recebidos'], -x[1]['frequencia'])))
         elif ordenacao == 'buchos_recebidos':
-            player_stats = dict(sorted(player_stats.items(), key=lambda x: x[1]['buchos_recebidos'], reverse=True))
+            player_stats = dict(sorted(player_stats.items(), key=lambda x: (-x[1]['buchos_recebidos'], x[1]['buchos_dados'], x[1]['frequencia'])))
 
         ate_select = 1
 
@@ -403,7 +403,7 @@ def home():
 
     top_buchos_dados_ord = sorted(
         player_stats.items(), 
-        key=lambda x: (x[1]['buchos_dados'], -x[1]['buchos_recebidos']), 
+        key=lambda x: (x[1]['buchos_dados'], -x[1]['buchos_recebidos'], x[1]['frequencia']), 
         reverse=True
     )[:3]
 
@@ -419,7 +419,7 @@ def home():
 
     top_buchos_recebidos_ord = sorted(
         player_stats.items(), 
-        key=lambda x: (-x[1]['buchos_recebidos'], x[1]['buchos_dados'])
+        key=lambda x: (-x[1]['buchos_recebidos'], x[1]['buchos_dados'], x[1]['frequencia'])
     )[:3]
 
     top_buchos_recebidos = [
