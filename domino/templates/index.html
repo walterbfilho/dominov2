@@ -138,40 +138,37 @@
 
     .podium {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: end;
-        margin-top: 30px;
-        margin-bottom: 30px;
+        padding-right: 25%;
+        padding-left: 25%;
     }
 
     .place {
-        width: 100px;
+        width: 100%;
         display: flex;
         justify-content: center;
         align-items: flex-end;
         color: black;
-        font-size: 16px;
-        padding: 10px;
-        margin: 0 5px;
+        font-size: 1rem;
     }
 
     .first {
-        height: 150px;
+        height: 8rem;
         background-color: #FFD700; /* Ouro */
-        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.4);
+        box-shadow: 0px 0.5rem 1rem rgba(0, 0, 0, 0.4);
     }
 
     .second {
-        height: 100px;
-        max-width: 100%;
+        height: 6rem;
         background-color: #C0C0C0; /* Prata */
-        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 0.5rem 1rem rgba(0, 0, 0, 0.3);
     }
 
     .third {
-        height: 80px;
+        height: 5rem;
         background-color: #CD7F32; /* Bronze */
-        box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 0.5rem 1rem rgba(0, 0, 0, 0.2);
     }
 
     .top-podios{
@@ -180,7 +177,7 @@
     }
 
     .second-div, .first-div, .third-div {
-        max-width: 23%;
+        max-width: 33%;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -189,35 +186,18 @@
     }
 
     .img-top {
-        width: 50%; 
-        max-width: 50%;
+        width: 100%; 
         height: auto; 
         margin: 0 !important; 
-        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3); 
         border-radius: 50%; 
     }
 
-
-    /* Define estilos para telas menores */
-    @media (max-width: 768px) {
-        .container {
-            width: 95%;
-        }
-
-        .adjust-media {
-            display: flex;
-            flex-direction: row;
-            align-items: flex-end; /* Alinha os itens à direita */
-            padding-top: 2%; /* Mantém o padding no topo */
-            width: 100%; 
-        }
-
-        img {
-            display: block;
-            margin: auto;
-            width: 40%;
-        }
+    .top-bd, top-br{
+        display: flex;
+        flex-direction: column;
+        align-items: space-between;
     }
+
 </style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -232,9 +212,10 @@
             <div class="podium">
                 {% if top_buchos_dados[1] %}
                 <div class="second-div">
-                    {{ top_buchos_dados[1].name }}
                     {% if top_buchos_dados[1].image_filename %}
                         <img class="img-top" src="{{ url_for('static', filename='uploads/' + top_buchos_dados[1].image_filename) }}" alt="Imagem de {{ top_buchos_dados[1].name }}" width="150">
+                        {% else %}
+                        {{ top_buchos_recebidos[1].name }}
                     {% endif %}                 
                     <div class="place second">2º Lugar</div>
                     <p>{{ top_buchos_dados[1].buchos_dados }} buchos</p>
@@ -242,9 +223,10 @@
                 {% endif %}  
                 {% if top_buchos_dados[0] %}
                 <div class="first-div">
-                    {{ top_buchos_dados[0].name }}
                     {% if top_buchos_dados[0].image_filename %}
                         <img class="img-top" src="{{ url_for('static', filename='uploads/' + top_buchos_dados[0].image_filename) }}" alt="Imagem de {{ top_buchos_dados[0].name }}" width="150">
+                        {% else %}
+                        {{ top_buchos_recebidos[0].name }}
                     {% endif %}                 
                     <div class="place first">1º Lugar</div>
                     <p>{{ top_buchos_dados[0].buchos_dados }} buchos</p>
@@ -252,9 +234,10 @@
                 {% endif %}  
                 {% if top_buchos_dados[2] %}
                 <div class="third-div">
-                    {{ top_buchos_dados[2].name }}
                     {% if top_buchos_dados[2].image_filename %}
                         <img class="img-top" src="{{ url_for('static', filename='uploads/' + top_buchos_dados[2].image_filename) }}" alt="Imagem de {{ top_buchos_dados[2].name }}" width="150">
+                        {% else %}
+                        {{ top_buchos_recebidos[2].name }}
                     {% endif %}                 
                     <div class="place third">3º Lugar</div>
                     <p>{{ top_buchos_dados[2].buchos_dados }} buchos</p>
@@ -262,15 +245,16 @@
                 {% endif %}  
             </div>
         </div>
-        <img src="{{ url_for('static', filename='Reinado_dos_Buchos.png') }}" alt="Imagem de peças de dominó" width="300">
+        <img src="{{ url_for('static', filename='Reinado_dos_Buchos.png') }}" alt="Imagem de peças de dominó" width="10rem">
         <div class="top-br">
             <h1 style="text-align: center">Top Buchos Recebidos do Mês</h1>
             <div class="podium">
                 {% if top_buchos_recebidos[1] %}
                 <div class="second-div">
-                    {{ top_buchos_recebidos[1].name }}
                     {% if top_buchos_recebidos[1].image_filename %}
                         <img class="img-top" src="{{ url_for('static', filename='uploads/' + top_buchos_recebidos[1].image_filename) }}" alt="Imagem de {{ top_buchos_recebidos[1].name }}" width="150">
+                        {% else %}
+                        {{ top_buchos_recebidos[1].name }}
                     {% endif %}                 
                     <div class="place second">2º Lugar</div>
                     <p>{{ top_buchos_recebidos[1].buchos_recebidos }} buchos</p>
@@ -278,9 +262,10 @@
                 {% endif %}  
                 {% if top_buchos_recebidos[0] %}
                 <div class="first-div">
-                    {{ top_buchos_recebidos[0].name }}
                     {% if top_buchos_recebidos[0].image_filename %}
                         <img class="img-top" src="{{ url_for('static', filename='uploads/' + top_buchos_recebidos[0].image_filename) }}" alt="Imagem de {{ top_buchos_recebidos[0].name }}" width="150">
+                        {% else %}
+                        {{ top_buchos_recebidos[0].name }}
                     {% endif %}                 
                     <div class="place first">1º Lugar</div>
                     <p>{{ top_buchos_recebidos[0].buchos_recebidos }} buchos</p>
@@ -288,9 +273,10 @@
                 {% endif %} 
                 {% if top_buchos_recebidos[2] %}
                 <div class="third-div">
-                    {{ top_buchos_recebidos[2].name }}
                     {% if top_buchos_recebidos[2].image_filename %}
                         <img class="img-top" src="{{ url_for('static', filename='uploads/' + top_buchos_recebidos[2].image_filename) }}" alt="Imagem de {{ top_buchos_recebidos[2].name }}" width="150">
+                        {% else %}
+                        {{ top_buchos_recebidos[2].name }}
                     {% endif %}                 
                     <div class="place third">3º Lugar</div>
                     <p>{{ top_buchos_recebidos[2].buchos_recebidos }} buchos</p>
