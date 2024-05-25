@@ -22,12 +22,11 @@
         width: 80%;
         margin: auto;
         background: #fff;
-        padding: 30px;
         box-shadow: 0px 0px 10px 0px #000;
     }
 
     /* Define o estilo da imagem */
-    img {
+    .accordion img {
         display: block;
         margin: auto;
         width: 25%; /* Torna a imagem responsiva */
@@ -83,7 +82,7 @@
     /* Define o estilo dos links */
     .styled-link {
         text-decoration: none;
-        color: #4CAF50;
+        color: white;
         font-size: 16px;
         margin: 10px;
     }
@@ -136,67 +135,171 @@
         color: inherit; /* Mantém a cor de texto ao passar o mouse */
     }
 
-    .podium {
-        display: flex;
-        justify-content: space-between;
-        align-items: end;
-        padding-right: 25%;
-        padding-left: 25%;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Poppins');
 
-    .place {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-        color: black;
-        font-size: 1rem;
-    }
 
-    .first {
-        height: 8rem;
-        background-color: #FFD700; /* Ouro */
-        box-shadow: 0px 0.5rem 1rem rgba(0, 0, 0, 0.4);
-    }
+.container .card {
+  position: relative;
+  width: 300px;
+  background: rgba(255, 255, 255, 0.05);
+  margin: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(10px);
+}
 
-    .second {
-        height: 6rem;
-        background-color: #C0C0C0; /* Prata */
-        box-shadow: 0px 0.5rem 1rem rgba(0, 0, 0, 0.3);
-    }
+.container .card .content {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  opacity: 0.5;
+  transition: 0.5s;
+}
 
-    .third {
-        height: 5rem;
-        background-color: #CD7F32; /* Bronze */
-        box-shadow: 0px 0.5rem 1rem rgba(0, 0, 0, 0.2);
-    }
+.container .card:hover .content {
+  opacity: 1;
+  transform: translateY(-20px);
+}
 
-    .top-podios{
-        display: flex;
-        align-items: center;
-    }
+.container .card .content .imgBx {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 10px solid rgba(0, 0, 0, 0.25);
+}
 
-    .second-div, .first-div, .third-div {
-        max-width: 33%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center; /* Centraliza horizontalmente */
-        text-align: center; /* Centraliza o texto */
-    }
+.container .card .content .imgBx img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-    .img-top {
-        width: 100%; 
-        height: auto; 
-        margin: 0 !important; 
-        border-radius: 50%; 
-    }
+.container .card .content .contentBx h3 {
+  color: black;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 500;
+  font-size: 18px;
+  text-align: center;
+  margin: 20px 0 10px;
+  line-height: 1.1em;
+}
+.container .card .content .contentBx h3 span{
+  font-size: 12px;
+  font-weight: 300;
+  text-transform: initial;
+}
 
-    .top-bd, top-br{
-        display: flex;
-        flex-direction: column;
-        align-items: space-between;
-    }
+.container .card .sci{
+  position: absolute;
+  bottom: -35px;
+  display: flex;
+}
+
+h2{
+  color: black;
+  text-align: center;
+}
+
+.container .card.first {
+    background-color: #f2d93f;
+    
+  height: 500px;
+  }
+
+  .container .card.second {
+    background-color: #ced3d9;
+    
+  height: 400px;
+  }
+
+  .container .card.third {
+    background-color: #c16f51;
+    
+  height: 300px;
+  }
+
+  .cards{
+    display: flex;
+    justify-content: center;
+    align-items: end;
+  }
+
+  header{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  header img{
+    width: 40%;
+  }
+
+  .menu{
+    background-color: green;
+    border: 1px solid;
+    border-radius: 7%;
+    height: fit-content;
+    border: 1px solid;
+    border-color: green;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-buttons {
+    display: flex;
+    justify-content: end;
+    padding-top: 20px;
+    padding-right: 20px;
+}
+
+.login-buttons a {
+    text-decoration: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.login-buttons a.login {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.login-buttons a.logout {
+    background-color: #f44336;
+    color: white;
+}
+
+.login-buttons a:hover {
+    transform: scale(1.05);
+}
+
+.login-buttons a.login:hover {
+    background-color: #45a049;
+}
+
+.login-buttons a.logout:hover {
+    background-color: #da190b;
+}
+
+.login-buttons a:active {
+    transform: scale(1);
+}
 
 </style>
 
@@ -206,102 +309,119 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <div class="container">
-    <div class="top-podios">
-        <div class="top-bd">
-            <h1 style="text-align: center">Top Buchos Dados do Mês</h1>
-            <div class="podium">
-                {% if top_buchos_dados[1] %}
-                <div class="second-div">
-                    {% if top_buchos_dados[1].image_filename %}
-                        <img class="img-top" src="{{ url_for('static', filename='uploads/' + top_buchos_dados[1].image_filename) }}" alt="Imagem de {{ top_buchos_dados[1].name }}" width="150">
-                        {% else %}
-                        {{ top_buchos_recebidos[1].name }}
-                    {% endif %}                 
-                    <div class="place second">2º Lugar</div>
-                    <p>{{ top_buchos_dados[1].buchos_dados }} buchos</p>
-                </div>
-                {% endif %}  
-                {% if top_buchos_dados[0] %}
-                <div class="first-div">
-                    {% if top_buchos_dados[0].image_filename %}
-                        <img class="img-top" src="{{ url_for('static', filename='uploads/' + top_buchos_dados[0].image_filename) }}" alt="Imagem de {{ top_buchos_dados[0].name }}" width="150">
-                        {% else %}
-                        {{ top_buchos_recebidos[0].name }}
-                    {% endif %}                 
-                    <div class="place first">1º Lugar</div>
-                    <p>{{ top_buchos_dados[0].buchos_dados }} buchos</p>
-                </div>
-                {% endif %}  
-                {% if top_buchos_dados[2] %}
-                <div class="third-div">
-                    {% if top_buchos_dados[2].image_filename %}
-                        <img class="img-top" src="{{ url_for('static', filename='uploads/' + top_buchos_dados[2].image_filename) }}" alt="Imagem de {{ top_buchos_dados[2].name }}" width="150">
-                        {% else %}
-                        {{ top_buchos_recebidos[2].name }}
-                    {% endif %}                 
-                    <div class="place third">3º Lugar</div>
-                    <p>{{ top_buchos_dados[2].buchos_dados }} buchos</p>
-                </div>
-                {% endif %}  
-            </div>
-        </div>
-        <img src="{{ url_for('static', filename='Reinado_dos_Buchos.png') }}" alt="Imagem de peças de dominó" width="10rem">
-        <div class="top-br">
-            <h1 style="text-align: center">Top Buchos Recebidos do Mês</h1>
-            <div class="podium">
-                {% if top_buchos_recebidos[1] %}
-                <div class="second-div">
-                    {% if top_buchos_recebidos[1].image_filename %}
-                        <img class="img-top" src="{{ url_for('static', filename='uploads/' + top_buchos_recebidos[1].image_filename) }}" alt="Imagem de {{ top_buchos_recebidos[1].name }}" width="150">
-                        {% else %}
-                        {{ top_buchos_recebidos[1].name }}
-                    {% endif %}                 
-                    <div class="place second">2º Lugar</div>
-                    <p>{{ top_buchos_recebidos[1].buchos_recebidos }} buchos</p>
-                </div>
-                {% endif %}  
-                {% if top_buchos_recebidos[0] %}
-                <div class="first-div">
-                    {% if top_buchos_recebidos[0].image_filename %}
-                        <img class="img-top" src="{{ url_for('static', filename='uploads/' + top_buchos_recebidos[0].image_filename) }}" alt="Imagem de {{ top_buchos_recebidos[0].name }}" width="150">
-                        {% else %}
-                        {{ top_buchos_recebidos[0].name }}
-                    {% endif %}                 
-                    <div class="place first">1º Lugar</div>
-                    <p>{{ top_buchos_recebidos[0].buchos_recebidos }} buchos</p>
-                </div>
-                {% endif %} 
-                {% if top_buchos_recebidos[2] %}
-                <div class="third-div">
-                    {% if top_buchos_recebidos[2].image_filename %}
-                        <img class="img-top" src="{{ url_for('static', filename='uploads/' + top_buchos_recebidos[2].image_filename) }}" alt="Imagem de {{ top_buchos_recebidos[2].name }}" width="150">
-                        {% else %}
-                        {{ top_buchos_recebidos[2].name }}
-                    {% endif %}                 
-                    <div class="place third">3º Lugar</div>
-                    <p>{{ top_buchos_recebidos[2].buchos_recebidos }} buchos</p>
-                </div>
-                {% endif %} 
-            </div>
-        </div>
+    <div class="login-buttons">
+        {% if current_user.is_authenticated %} 
+            <a class="logout" href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+            <a class="login" href="{{ url_for('login') }}">Login</a>
+        {% endif %}
     </div>
-    {% if current_user.is_authenticated %}
-        <div class="adjust-media"> 
-            <a class="styled-link" href="{{ url_for('registrar_jogador') }}">Registrar</a>
-            <a class="styled-link" href="{{ url_for('chart') }}">Estatísticas</a>
-            <a class="styled-link" href="{{ url_for('relatorio_anos') }}">Relatório</a>
-            <a class="styled-link" href="{{ url_for('view_game_days') }}">Dias de Jogo</a>
-            <a class="styled-link" href="{{ url_for('tabela_buchos') }}">Visualização Detalhada dos Buchos</a>
+    <header>
+        <img src="{{ url_for('static', filename='Reinado_dos_Buchos.png') }}" alt="Imagem de peças de dominó" margin: 0;>
+        <div class="menu">
+        {% if current_user.is_authenticated %}
+            <div class="adjust-media"> 
+                <a class="styled-link" href="{{ url_for('view_game_days') }}">Dias de Jogo</a>
+                <a class="styled-link" href="{{ url_for('relatorio_anos') }}">Relatório</a>
+                <a class="styled-link" href="{{ url_for('tabela_buchos') }}">Visualização Detalhada dos Buchos</a>
+                <a class="styled-link" href="{{ url_for('chart') }}">Estatísticas Gerais</a>
+                <a class="styled-link" href="{{ url_for('registrar_jogador') }}">Registrar novo jogador</a>
+            </div>
+        {% else %}
+            <div class="adjust-media"> 
+                <a class="styled-link" href="{{ url_for('view_game_days') }}">Dias de Jogo</a>
+                <a class="styled-link" href="{{ url_for('relatorio_anos') }}">Relatório</a>
+                <a class="styled-link" href="{{ url_for('tabela_buchos') }}">Visualização Detalhada dos Buchos</a>
+                <a class="styled-link" href="{{ url_for('chart') }}">Estatísticas Gerais</a>
+            </div>
+        {% endif %}
         </div>
-    {% else %}
-        <div class="adjust-media"> 
-            <a class="styled-link" href="{{ url_for('chart') }}">Estatísticas do mês</a>
-            <a class="styled-link" href="{{ url_for('view_game_days') }}">Dias de Jogo</a>
-            <a class="styled-link" href="{{ url_for('relatorio_anos') }}">Relatório</a>
-            <a class="styled-link" href="{{ url_for('login') }}">Login</a>
-            <a class="styled-link" href="{{ url_for('tabela_buchos') }}">Visualização Detalhada dos Buchos</a>
+    </header>
+    <hr>
+    <section>
+        <h2>Top Buchos Dados do Mês</h2>
+        <div class="cards">
+            <div class="card second">
+            <div class="content">
+                {% if top_buchos_dados[1].image_filename %}             
+                <div class="imgBx"><img src="{{ url_for('static', filename='uploads/' + top_buchos_dados[1].image_filename) }}" alt="" /></div>
+                {% else %}
+                <div class="imgBx"><img src="" alt="" /></div>
+                {% endif %}
+                <div class="contentBx">
+                <h3>{{ top_buchos_dados[1].name }}<br /><span>{{ top_buchos_dados[1].buchos_dados }} buchos</span></h3>
+                </div>
+            </div>
+            </div>
+            <div class="card first">
+            <div class="content">
+                {% if top_buchos_dados[0].image_filename %}             
+                <div class="imgBx"><img src="{{ url_for('static', filename='uploads/' + top_buchos_dados[0].image_filename) }}" alt="" /></div>
+                {% else %}
+                <div class="imgBx"><img src="" alt="" /></div>
+                {% endif %}
+                <div class="contentBx">
+                <h3>{{ top_buchos_dados[0].name }}<br /><span>{{ top_buchos_dados[0].buchos_dados }} buchos</span></h3>
+                </div>
+            </div>
+            </div>
+            <div class="card third">
+            <div class="content">
+                {% if top_buchos_dados[2].image_filename %}             
+                <div class="imgBx"><img src="{{ url_for('static', filename='uploads/' + top_buchos_dados[2].image_filename) }}" alt="" /></div>
+                {% else %}
+                <div class="imgBx"><img src="" alt="" /></div>
+                {% endif %}
+                <div class="contentBx">
+                <h3>{{ top_buchos_dados[2].name }}<br /><span>{{ top_buchos_dados[2].buchos_dados }} buchos</span></h3>
+                </div>
+            </div>
+            </div>
         </div>
-    {% endif %}
+    </section>
+    <hr>
+    <section>
+        <h2>Top Buchos Recebidos do Mês</h2>
+        <div class="cards">
+            <div class="card second">
+            <div class="content">
+                {% if top_buchos_recebidos[1].image_filename %}             
+                <div class="imgBx"><img src="{{ url_for('static', filename='uploads/' + top_buchos_recebidos[1].image_filename) }}" alt="" /></div>
+                {% else %}
+                <div class="imgBx"><img src="" alt="" /></div>
+                {% endif %}
+                <div class="contentBx">
+                <h3>{{ top_buchos_recebidos[1].name }}<br /><span>{{ top_buchos_recebidos[1].buchos_recebidos }} buchos</span></h3>
+                </div>
+            </div>
+            </div>
+            <div class="card first">
+            <div class="content">
+                {% if top_buchos_recebidos[0].image_filename %}             
+                <div class="imgBx"><img src="{{ url_for('static', filename='uploads/' + top_buchos_recebidos[0].image_filename) }}" alt="" /></div>
+                {% else %}
+                <div class="imgBx"><img src="" alt="" /></div>
+                {% endif %}
+                <div class="contentBx">
+                <h3>{{ top_buchos_recebidos[0].name }}<br /><span>{{ top_buchos_recebidos[0].buchos_recebidos }} buchos</span></h3>
+                </div>
+            </div>
+            </div>
+            <div class="card third">
+            <div class="content">
+                {% if top_buchos_recebidos[2].image_filename %}             
+                <div class="imgBx"><img src="{{ url_for('static', filename='uploads/' + top_buchos_recebidos[2].image_filename) }}" alt="" /></div>
+                {% else %}
+                <div class="imgBx"><img src="" alt="" /></div>
+                {% endif %}
+                <div class="contentBx">
+                <h3>{{ top_buchos_recebidos[2].name }}<br /><span>{{ top_buchos_recebidos[2].buchos_recebidos }} buchos</span></h3>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+    <hr>
     <div id="accordion">
         <h2>Jogadores Registrados:</h2>
         <div class="scrollable-table">
@@ -378,11 +498,6 @@
         </div>
     </div>
     <br>
-    {% if current_user.is_authenticated %}
-        <div class="adjust-media" style="padding-top: 2%;display: flex; justify-content: end; flex-wrap: wrap;"> 
-            <a class="logout-button" href="{{ url_for('logout') }}">Logout</a>
-        </div>
-    {% endif %}
     <script>
         $(document).ready(function() {
             $("#accordion").accordion({
