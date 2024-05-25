@@ -317,6 +317,8 @@ def relatorio_anos():
     game_days = GameDay.query.order_by(GameDay.date.asc()).all()
     anos_disponiveis = set(f'{gd.date.month}/{gd.date.year}' for gd in game_days)
     options = [(ano, str(ano)) for ano in anos_disponiveis]
+    for option in options:
+        print(f'opcao: {option}')
     ate_select = 0
     form = RelatorioForm()
     form.de.choices = [('', 'Nenhum')] + options
