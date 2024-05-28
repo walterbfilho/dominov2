@@ -1,0 +1,380 @@
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+.blink {
+    animation: blink 0.5s infinite;
+}
+
+body {
+    margin:0;
+    padding:0;
+    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Define o estilo do container principal */
+.container {
+    width: 100%;
+    margin: auto;
+    background: #fff;
+}
+
+/* Define o estilo da imagem */
+.accordion img {
+    display: block;
+    margin: auto;
+    width: 25%; /* Torna a imagem responsiva */
+}
+
+/* Define o estilo da tabela e seus elementos */
+.players-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.players-table th, .players-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.players-table th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.players-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Define o estilo dos botões */
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+.adjust-media{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Define o estilo dos links */
+.styled-link {
+    text-decoration: none;
+    text-align: center;
+    color: white;
+    margin: 3%;
+}
+
+.styled-link:hover {
+    text-decoration: underline;
+}
+
+/* Define o estilo do botão de logout */
+.logout-button {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+.logout-button:hover {
+    background-color: #da190b;
+}
+
+.scrollable-table{
+    overflow-x: auto;
+}
+
+.players-table td:first-child form button {
+    background-color: transparent; /* Remove a cor de fundo */
+    color: inherit; /* Usa a cor de texto padrão */
+    border: none; /* Remove a borda */
+    padding: 0; /* Remove o padding */
+    font-size: inherit; /* Usa o tamanho de fonte padrão */
+    cursor: pointer; /* Mantém o cursor como ponteiro */
+    text-decoration: underline; /* Adiciona sublinhado */
+    border-radius: 0; /* Remove o arredondamento */
+    display: inline; /* Mantém o botão inline */
+}
+
+.players-table td:first-child {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.players-table td:first-child form button:hover {
+    background-color: transparent; /* Remove a cor de fundo ao passar o mouse */
+    color: inherit; /* Mantém a cor de texto ao passar o mouse */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins');
+
+
+.container .card {
+position: relative;
+width: 25%;
+background: rgba(255, 255, 255, 0.05);
+margin: 4%;
+box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+border-radius: 15px;
+display: flex;
+justify-content: center;
+align-items: center;
+backdrop-filter: blur(10px);
+}
+
+.container .card .content {
+position: relative;
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+opacity: 0.5;
+transition: 0.5s;
+width: 75%;
+height: 75%;
+}
+
+.container .card:hover .content {
+opacity: 1;
+transform: translateY(-20px);
+}
+
+.container .card.first .content .imgBx {
+position: relative;
+width: 75%;
+height: 100%;
+border-radius: 50%;
+overflow: hidden;
+border: 10px solid rgba(0, 0, 0, 0.25);
+}
+
+.container .card.second .content .imgBx {
+    position: relative;
+    width: 60%;
+    height: 80%;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 10px solid rgba(0, 0, 0, 0.25);
+}
+
+.container .card.third .content .imgBx {
+    position: relative;
+    width: 45%;
+    height: 60%;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 10px solid rgba(0, 0, 0, 0.25);
+}
+
+.container .card .content .imgBx img {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+.container .card .content .contentBx h3 {
+color: black;
+text-transform: uppercase;
+letter-spacing: 2px;
+font-weight: 500;
+font-size: 18px;
+text-align: center;
+margin: 20px 0 10px;
+line-height: 1.1em;
+}
+.container .card .content .contentBx h3 span{
+font-size: 12px;
+font-weight: 300;
+text-transform: initial;
+}
+
+.container .card .sci{
+position: absolute;
+bottom: -35px;
+display: flex;
+}
+
+h2{
+color: black;
+text-align: center;
+}
+
+.container .card.first {
+background-color: #f2d93f;
+
+height: 30rem;
+}
+
+.container .card.second {
+background-color: #ced3d9;
+
+height: 25rem;
+}
+
+.container .card.third {
+background-color: #c16f51;
+
+height: 20rem;
+}
+
+.cards{
+display: flex;
+justify-content: center;
+align-items: end;
+}
+
+header{
+display: flex;
+justify-content: space-around;
+align-items: center;
+}
+
+header img{
+width: 40%;
+}
+
+.menu{
+background-color: green;
+border: 1px solid;
+border-radius: 7%;
+height: fit-content;
+border: 1px solid;
+border-color: green;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+
+.login-buttons {
+display: flex;
+justify-content: end;
+padding-top: 2%;
+padding-right: 2%;
+}
+
+.login-buttons a {
+text-decoration: none;
+padding: 15px 30px;
+font-size: 18px;
+font-weight: bold;
+border-radius: 8px;
+transition: background-color 0.3s ease, transform 0.3s ease;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.login-buttons a.login {
+background-color: #4CAF50;
+color: white;
+}
+
+.login-buttons a.logout {
+background-color: #f44336;
+color: white;
+}
+
+.login-buttons a:hover {
+transform: scale(1.05);
+}
+
+.login-buttons a.login:hover {
+background-color: #45a049;
+}
+
+.login-buttons a.logout:hover {
+background-color: #da190b;
+}
+
+.login-buttons a:active {
+transform: scale(1);
+}
+
+@media only screen and (max-width: 768px) {
+    .container .card.first .content .imgBx {
+        position: relative;
+        width: 100%;
+        height: 40%;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 10px solid rgba(0, 0, 0, 0.25);
+    }
+
+    .container .card.third .content {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        opacity: 0.5;
+        transition: 0.5s;
+        width: 90%;
+        height: 90%;
+    }
+
+    .container .card.third .content .imgBx {
+        position: relative;
+        width: 70%;
+        height: 60%;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 10px solid rgba(0, 0, 0, 0.25);
+    }
+
+    .container .card.second .content .imgBx {
+        position: relative;
+        width: 90%;
+        height: 80%;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 10px solid rgba(0, 0, 0, 0.25);
+    }
+
+    .container .card.first {
+        background-color: #f2d93f;
+        height: 22rem;
+    }
+
+    .container .card.second {
+        background-color: #ced3d9;
+        height: 17rem;
+    }
+
+    .container .card.third {
+        background-color: #c16f51;
+        height: 12rem;
+    }
+
+    .container .card {
+        width: 33%;
+        margin: 1%;
+    }
+
+}
