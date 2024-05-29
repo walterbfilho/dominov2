@@ -614,8 +614,8 @@ def tabela_buchos():
                 total_bd += detail.buchos_given  
                 total_br += detail.buchos_received  
             else:
-                player_data[f"{game_day.date}_dados"] = 0
-                player_data[f"{game_day.date}_recebidos"] = 0
+                player_data[f"{game_day.date}_dados"] = 'Ausente'
+                player_data[f"{game_day.date}_recebidos"] = 'Ausente'
         
         player_data["total_bd"] = total_bd
         player_data["total_br"] = total_br  
