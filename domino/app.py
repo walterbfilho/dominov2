@@ -314,9 +314,19 @@ class RelatorioForm(FlaskForm):
 
 @app.route('/relatorio_anos', methods=['GET', 'POST'])
 def relatorio_anos():
-    game_days = GameDay.query.order_by(GameDay.date.asc()).all()
-    anos_disponiveis = set(f'{gd.date.month}/{gd.date.year}' for gd in game_days)
-    options = [(ano, str(ano)) for ano in anos_disponiveis]
+    game_days = GameDay.query.order_by(GameDay.date.desc()).all()
+
+    anos_disponiveis = [f'{gd.date.month}/{gd.date.year}' for gd in game_days]
+
+    anos_unicos = []
+    for ano in anos_disponiveis:
+        if ano not in anos_unicos:
+            anos_unicos.append(ano)
+
+    anos_ordenados = sorted(anos_unicos, key=lambda x: datetime.strptime(x, '%m/%Y'), reverse=True)
+
+    options = [(ano, ano) for ano in anos_ordenados]
+
     for option in options:
         print(f'opcao: {option}')
     ate_select = 0

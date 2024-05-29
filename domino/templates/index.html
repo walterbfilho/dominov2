@@ -84,7 +84,7 @@
     .styled-link {
         text-decoration: none;
         text-align: center;
-        color: white;
+        color: green;
         margin: 3%;
     }
     
@@ -258,21 +258,17 @@
     
     header{
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     }
     
     header img{
-    width: 40%;
+    width: 20%;
     }
     
     .menu{
-    background-color: green;
-    border: 1px solid;
-    border-radius: 7%;
     height: fit-content;
-    border: 1px solid;
-    border-color: green;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -323,6 +319,10 @@
     }
     
     @media only screen and (max-width: 768px) {
+
+        header img{
+            width: 40%;
+        }
         .container .card.first .content .imgBx {
             position: relative;
             width: 100%;
