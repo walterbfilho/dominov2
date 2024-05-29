@@ -141,7 +141,7 @@
     
     .container .card {
     position: relative;
-    width: 25%;
+    width: 15%;
     background: rgba(255, 255, 255, 0.05);
     margin: 4%;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
@@ -160,8 +160,8 @@
     flex-direction: column;
     opacity: 0.5;
     transition: 0.5s;
-    width: 75%;
-    height: 75%;
+    width: 100%;
+    height: 100%;
     }
     
     .container .card:hover .content {
@@ -171,8 +171,8 @@
     
     .container .card.first .content .imgBx {
     position: relative;
-    width: 75%;
-    height: 100%;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     overflow: hidden;
     border: 10px solid rgba(0, 0, 0, 0.25);
@@ -180,8 +180,8 @@
     
     .container .card.second .content .imgBx {
         position: relative;
-        width: 60%;
-        height: 80%;
+        width: 150px;
+        height: 150px;
         border-radius: 50%;
         overflow: hidden;
         border: 10px solid rgba(0, 0, 0, 0.25);
@@ -189,8 +189,8 @@
     
     .container .card.third .content .imgBx {
         position: relative;
-        width: 45%;
-        height: 60%;
+        width: 150px;
+        height: 150px;
         border-radius: 50%;
         overflow: hidden;
         border: 10px solid rgba(0, 0, 0, 0.25);
@@ -235,19 +235,18 @@
     .container .card.first {
     background-color: #f2d93f;
     
-    height: 30rem;
+    height: 500px;
     }
     
     .container .card.second {
-    background-color: #ced3d9;
-    
-    height: 25rem;
+        background-color: #ced3d9;
+        height: 400px;
     }
     
     .container .card.third {
     background-color: #c16f51;
     
-    height: 20rem;
+    height: 300px;
     }
     
     .cards{
@@ -284,7 +283,7 @@
     
     .login-buttons a {
     text-decoration: none;
-    padding: 15px 30px;
+    padding: 0.5% 0.75%;
     font-size: 18px;
     font-weight: bold;
     border-radius: 8px;
@@ -320,13 +319,17 @@
     
     @media only screen and (max-width: 768px) {
 
+        .login-buttons a {
+            font-size: 14px;
+        }
+
         header img{
             width: 40%;
         }
         .container .card.first .content .imgBx {
             position: relative;
-            width: 100%;
-            height: 40%;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             overflow: hidden;
             border: 10px solid rgba(0, 0, 0, 0.25);
@@ -346,8 +349,8 @@
     
         .container .card.third .content .imgBx {
             position: relative;
-            width: 70%;
-            height: 60%;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             overflow: hidden;
             border: 10px solid rgba(0, 0, 0, 0.25);
@@ -355,8 +358,8 @@
     
         .container .card.second .content .imgBx {
             position: relative;
-            width: 90%;
-            height: 80%;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             overflow: hidden;
             border: 10px solid rgba(0, 0, 0, 0.25);
