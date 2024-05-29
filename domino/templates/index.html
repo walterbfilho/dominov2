@@ -437,38 +437,44 @@
         <div class="cards">
             <div class="card second">
             <div class="content">
-                {% if top_buchos_dados[1].image_filename %}             
-                <div class="imgBx"><img src="{{ url_for('static', filename='uploads/' + top_buchos_dados[1].image_filename) }}" alt="" /></div>
-                {% else %}
-                <div class="imgBx"><img src="" alt="" /></div>
+                {% if top_buchos_dados[1]%}
+                    {% if top_buchos_dados[1].image_filename %}             
+                    <div class="imgBx"><img src="{{ url_for('static', filename='uploads/' + top_buchos_dados[1].image_filename) }}" alt="" /></div>
+                    {% else %}
+                    <div class="imgBx"><img src="" alt="" /></div>
+                    {% endif %}
+                    <div class="contentBx">
+                    <h3>{{ top_buchos_dados[1].name }}<br /><span>{{ top_buchos_dados[1].buchos_dados }} buchos</span></h3>
+                    </div>
                 {% endif %}
-                <div class="contentBx">
-                <h3>{{ top_buchos_dados[1].name }}<br /><span>{{ top_buchos_dados[1].buchos_dados }} buchos</span></h3>
-                </div>
             </div>
             </div>
             <div class="card first">
             <div class="content">
-                {% if top_buchos_dados[0].image_filename %}             
-                <div class="imgBx"><img src="{{ url_for('static', filename='uploads/' + top_buchos_dados[0].image_filename) }}" alt="" /></div>
-                {% else %}
-                <div class="imgBx"><img src="" alt="" /></div>
+                {% if top_buchos_dados[0]%} 
+                    {% if top_buchos_dados[0].image_filename %}             
+                    <div class="imgBx"><img src="{{ url_for('static', filename='uploads/' + top_buchos_dados[0].image_filename) }}" alt="" /></div>
+                    {% else %}
+                    <div class="imgBx"><img src="" alt="" /></div>
+                    {% endif %}
+                    <div class="contentBx">
+                    <h3>{{ top_buchos_dados[0].name }}<br /><span>{{ top_buchos_dados[0].buchos_dados }} buchos</span></h3>
+                    </div>
                 {% endif %}
-                <div class="contentBx">
-                <h3>{{ top_buchos_dados[0].name }}<br /><span>{{ top_buchos_dados[0].buchos_dados }} buchos</span></h3>
-                </div>
             </div>
             </div>
             <div class="card third">
             <div class="content">
-                {% if top_buchos_dados[2].image_filename %}             
-                <div class="imgBx"><img src="{{ url_for('static', filename='uploads/' + top_buchos_dados[2].image_filename) }}" alt="" /></div>
-                {% else %}
-                <div class="imgBx"><img src="" alt="" /></div>
+                {% if top_buchos_dados[2]%}
+                    {% if top_buchos_dados[2].image_filename %}             
+                    <div class="imgBx"><img src="{{ url_for('static', filename='uploads/' + top_buchos_dados[2].image_filename) }}" alt="" /></div>
+                    {% else %}
+                    <div class="imgBx"><img src="" alt="" /></div>
+                    {% endif %}
+                    <div class="contentBx">
+                    <h3>{{ top_buchos_dados[2].name }}<br /><span>{{ top_buchos_dados[2].buchos_dados }} buchos</span></h3>
+                    </div>
                 {% endif %}
-                <div class="contentBx">
-                <h3>{{ top_buchos_dados[2].name }}<br /><span>{{ top_buchos_dados[2].buchos_dados }} buchos</span></h3>
-                </div>
             </div>
             </div>
         </div>
@@ -478,39 +484,45 @@
         <h2>Top Buchos Recebidos do Mês</h2>
         <div class="cards">
             <div class="card second">
-            <div class="content">
-                {% if top_buchos_recebidos[1].image_filename %}             
-                <div class="imgBx"><img src="{{ url_for('static', filename='uploads/' + top_buchos_recebidos[1].image_filename) }}" alt="" /></div>
-                {% else %}
-                <div class="imgBx"><img src="" alt="" /></div>
-                {% endif %}
-                <div class="contentBx">
-                <h3>{{ top_buchos_recebidos[1].name }}<br /><span>{{ top_buchos_recebidos[1].buchos_recebidos }} buchos</span></h3>
+            {% if top_buchos_recebidos[1]%}
+                <div class="content">
+                    {% if top_buchos_recebidos[1].image_filename %}             
+                    <div class="imgBx"><img src="{{ url_for('static', filename='uploads/' + top_buchos_recebidos[1].image_filename) }}" alt="" /></div>
+                    {% else %}
+                    <div class="imgBx"><img src="" alt="" /></div>
+                    {% endif %}
+                    <div class="contentBx">
+                    <h3>{{ top_buchos_recebidos[1].name }}<br /><span>{{ top_buchos_recebidos[1].buchos_recebidos }} buchos</span></h3>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
             </div>
             <div class="card first">
             <div class="content">
-                {% if top_buchos_recebidos[0].image_filename %}             
-                <div class="imgBx"><img src="{{ url_for('static', filename='uploads/' + top_buchos_recebidos[0].image_filename) }}" alt="" /></div>
-                {% else %}
-                <div class="imgBx"><img src="" alt="" /></div>
+                {% if top_buchos_recebidos[0]%}
+                    {% if top_buchos_recebidos[0].image_filename %}             
+                    <div class="imgBx"><img src="{{ url_for('static', filename='uploads/' + top_buchos_recebidos[0].image_filename) }}" alt="" /></div>
+                    {% else %}
+                    <div class="imgBx"><img src="" alt="" /></div>
+                    {% endif %}
+                    <div class="contentBx">
+                    <h3>{{ top_buchos_recebidos[0].name }}<br /><span>{{ top_buchos_recebidos[0].buchos_recebidos }} buchos</span></h3>
+                    </div>
                 {% endif %}
-                <div class="contentBx">
-                <h3>{{ top_buchos_recebidos[0].name }}<br /><span>{{ top_buchos_recebidos[0].buchos_recebidos }} buchos</span></h3>
-                </div>
             </div>
             </div>
             <div class="card third">
             <div class="content">
-                {% if top_buchos_recebidos[2].image_filename %}             
-                <div class="imgBx"><img src="{{ url_for('static', filename='uploads/' + top_buchos_recebidos[2].image_filename) }}" alt="" /></div>
-                {% else %}
-                <div class="imgBx"><img src="" alt="" /></div>
+                {% if top_buchos_recebidos[2]%}
+                    {% if top_buchos_recebidos[2].image_filename %}             
+                    <div class="imgBx"><img src="{{ url_for('static', filename='uploads/' + top_buchos_recebidos[2].image_filename) }}" alt="" /></div>
+                    {% else %}
+                    <div class="imgBx"><img src="" alt="" /></div>
+                    {% endif %}
+                    <div class="contentBx">
+                    <h3>{{ top_buchos_recebidos[2].name }}<br /><span>{{ top_buchos_recebidos[2].buchos_recebidos }} buchos</span></h3>
+                    </div>
                 {% endif %}
-                <div class="contentBx">
-                <h3>{{ top_buchos_recebidos[2].name }}<br /><span>{{ top_buchos_recebidos[2].buchos_recebidos }} buchos</span></h3>
-                </div>
             </div>
             </div>
         </div>
