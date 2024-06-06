@@ -236,10 +236,10 @@ def update_buchos(game_day_id, player_id):
             detail = GameDayPlayerDetails(game_day_id=game_day_id, player_id=player_id)
             db.session.add(detail)
 
-        detail.player.points -= detail.buchos_given * 100
-        detail.player.points += detail.buchos_received * 150
-        detail.player.points += form.buchos_given.data * 100
-        detail.player.points -= form.buchos_received.data * 150
+        detail.player.points -= detail.buchos_given * 150
+        detail.player.points += detail.buchos_received * 100
+        detail.player.points += form.buchos_given.data * 150
+        detail.player.points -= form.buchos_received.data * 100
         detail.player.buchos_dados -= detail.buchos_given
         detail.player.buchos_recebidos -= detail.buchos_received
         detail.player.buchos_dados += form.buchos_given.data
@@ -578,8 +578,8 @@ def delete_game_day(game_day_id):
         gdp.player.buchos_dados -= gdp.buchos_given
         gdp.player.frequencia_dias -= 1
         gdp.player.points -= 100
-        gdp.player.points += gdp.buchos_received * 150
-        gdp.player.points -= gdp.buchos_given * 10
+        gdp.player.points += gdp.buchos_received * 100
+        gdp.player.points -= gdp.buchos_given * 150
 
     all_players = Player.query.all() 
     for player in all_players:
@@ -624,19 +624,20 @@ def tabela_buchos():
         
     return render_template('tabela_buchos.html', table_data=table_data, game_days=game_days)
 
-
 @app.route('/delete_game_day_player/<int:game_day_id>/<int:game_day_player_id>', methods=['POST'])
 def delete_game_day_player(game_day_id, game_day_player_id):
+
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
+    
     gameDayPlayer = GameDayPlayerDetails.query.get_or_404(game_day_player_id)
     player = Player.query.get_or_404(gameDayPlayer.player.id)
     player.buchos_recebidos -= gameDayPlayer.buchos_received
     player.buchos_dados -= gameDayPlayer.buchos_given
     player.frequencia_dias -= 1
     player.points -= 200
-    player.points += gameDayPlayer.buchos_received * 150
-    player.points -= gameDayPlayer.buchos_given * 100
+    player.points += gameDayPlayer.buchos_received * 100
+    player.points -= gameDayPlayer.buchos_given * 150
 
     db.session.delete(gameDayPlayer)
     db.session.commit()
